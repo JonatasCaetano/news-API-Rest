@@ -18,17 +18,17 @@ public class User {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
-	@DocumentReference(lazy = true, collection = "News")
+	@DocumentReference(lazy = true, collection = "news")
 	private List<News> savedNews = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "News")
+	@DocumentReference(lazy = true, collection = "news")
 	private List<News> posted = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "Company")
+	@DocumentReference(lazy = true, collection = "company")
 	private List<Company> currentJob = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "Company")
+	@DocumentReference(lazy = true, collection = "company")
 	private List<Company> hasWorked = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "Company")
+	@DocumentReference(lazy = true, collection = "company")
 	private List<Company> following = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "Company")
+	@DocumentReference(lazy = true, collection = "company")
 	private List<Comment> comments = new ArrayList<>();
 			
 	public User() {

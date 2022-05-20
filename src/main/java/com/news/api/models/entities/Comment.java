@@ -15,9 +15,9 @@ public class Comment {
 	private String id;
 	private String body;
 	private LocalDateTime creationDate;
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private User author;
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {

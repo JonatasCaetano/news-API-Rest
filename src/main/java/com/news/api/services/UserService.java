@@ -13,16 +13,8 @@ public class UserService {
 	private UserRepository userRepository;
 	
 	public User createAccount(User user) {
-		return userRepository.insert(new User(
-				null,
-				user.getName(),
-				user.getEmail(),
-				user.getPassword(),
-				user.getCreationDate(),
-				user.getImage()
-				)
-			);
+		return userRepository.insert(user);
 	}
 	
-	
+
 }

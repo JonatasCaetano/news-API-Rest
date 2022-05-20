@@ -18,11 +18,11 @@ public class Company {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
-	@DocumentReference(lazy = true, collection = "News")
+	@DocumentReference(lazy = true, collection = "news")
 	private List<News> posted = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private List<User> currentWriters = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private List<User> formerWriters = new ArrayList<>();
 	
 	public Company() {

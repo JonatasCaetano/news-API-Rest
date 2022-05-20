@@ -19,15 +19,15 @@ public class News {
 	private String image;
 	private Boolean visible;
 	private Integer views;
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private User author;
-	@DocumentReference(lazy = true, collection = "Company")
+	@DocumentReference(lazy = true, collection = "company")
 	private Company publisher;
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private List<User> likes = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "Comment")
+	@DocumentReference(lazy = true, collection = "comment")
 	private List<Comment> comments = new ArrayList<>();
-	@DocumentReference(lazy = true, collection = "User")
+	@DocumentReference(lazy = true, collection = "user")
 	private List<User> usersViews = new ArrayList<>();
 	
 	public News() {
