@@ -16,5 +16,14 @@ public class UserService {
 		return userRepository.insert(user);
 	}
 	
+	public User login(String email, String password) throws Exception {
+		User user = userRepository.findByEmail(email).get();
+		if(user.getPassword().equals(password)) {
+			return user;
+		}else {
+			throw new Exception();
+		}
+	}
+	
 
 }
