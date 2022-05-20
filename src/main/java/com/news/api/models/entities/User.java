@@ -1,9 +1,12 @@
 package com.news.api.models.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Document
 public class User {
@@ -15,7 +18,19 @@ public class User {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
-	
+	@DocumentReference(lazy = true, collection = "News")
+	private List<News> savedNews = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "News")
+	private List<News> posted = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "Company")
+	private List<Company> currentJob = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "Company")
+	private List<Company> hasWorked = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "Company")
+	private List<Company> following = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "Company")
+	private List<Comment> comments = new ArrayList<>();
+			
 	public User() {
 		super();
 	}
@@ -78,7 +93,28 @@ public class User {
 		this.id = id;
 	}
 
-	
-	
+	public List<News> getSavedNews() {
+		return savedNews;
+	}
+
+	public List<News> getPosted() {
+		return posted;
+	}
+
+	public List<Company> getCurrentJob() {
+		return currentJob;
+	}
+
+	public List<Company> getHasWorked() {
+		return hasWorked;
+	}
+
+	public List<Company> getFollowing() {
+		return following;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
 	
 }

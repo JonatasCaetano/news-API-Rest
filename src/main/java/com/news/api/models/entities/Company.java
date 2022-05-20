@@ -1,9 +1,12 @@
 package com.news.api.models.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Document
 public class Company {
@@ -15,6 +18,12 @@ public class Company {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
+	@DocumentReference(lazy = true, collection = "News")
+	private List<News> posted = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "User")
+	private List<User> currentWriters = new ArrayList<>();
+	@DocumentReference(lazy = true, collection = "User")
+	private List<User> formerWriters = new ArrayList<>();
 	
 	public Company() {
 		super();
@@ -77,7 +86,17 @@ public class Company {
 	public void setImage(String image) {
 		this.image = image;
 	}
-	
-	
+
+	public List<News> getPosted() {
+		return posted;
+	}
+
+	public List<User> getCurrentWriters() {
+		return currentWriters;
+	}
+
+	public List<User> getFormerWriters() {
+		return formerWriters;
+	}
 	
 }

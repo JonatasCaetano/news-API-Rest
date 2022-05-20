@@ -1,9 +1,12 @@
 package com.news.api.models.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 @Document
 public class Comment {
@@ -12,6 +15,10 @@ public class Comment {
 	private String id;
 	private String body;
 	private LocalDateTime creationDate;
+	@DocumentReference(lazy = true, collection = "User")
+	private User author;
+	@DocumentReference(lazy = true, collection = "User")
+	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {
 		super();
