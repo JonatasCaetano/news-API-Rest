@@ -8,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Document
 public class News {
 
@@ -18,16 +20,20 @@ public class News {
 	private LocalDateTime creationDate;
 	private String image;
 	private Boolean visible;
-	private Integer views;
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference
 	private User author;
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference
 	private Company publisher;
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference
 	private List<User> likes = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "comment")
+	@JsonBackReference
 	private List<Comment> comments = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference
 	private List<User> usersViews = new ArrayList<>();
 	
 	public News() {
@@ -89,14 +95,6 @@ public class News {
 
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
-	}
-
-	public Integer getViews() {
-		return views;
-	}
-
-	public void setViews(Integer views) {
-		this.views = views;
 	}
 
 	public User getAuthor() {
