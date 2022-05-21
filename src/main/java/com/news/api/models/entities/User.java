@@ -18,6 +18,7 @@ public class User {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
+	private LocalDateTime lastLogin;
 	@DocumentReference(lazy = true, collection = "news")
 	private List<News> savedNews = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "news")
@@ -116,5 +117,15 @@ public class User {
 	public List<Comment> getComments() {
 		return comments;
 	}
+
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+	
+	
 	
 }

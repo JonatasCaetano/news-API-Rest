@@ -21,7 +21,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping(path = "/create")
-	public ResponseEntity<User> createAccount(@RequestBody User user) {
+	public ResponseEntity<String> createAccount(@RequestBody User user) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.createAccount(user));
 		}catch (Exception e) {
@@ -30,9 +30,18 @@ public class UserController {
 	}
 	
 	@GetMapping(path = "/login")
-	public ResponseEntity<User> login(@RequestParam(name = "email" ) String email, @RequestParam(name = "password") String password) {
+	public ResponseEntity<String> login(@RequestParam(name = "email" ) String email, @RequestParam(name = "password") String password) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.login(email, password));
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+	
+	@GetMapping(path = "/auth")
+	public ResponseEntity<User> login(@RequestParam(name = "token") String token) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.isAuthorization(token));
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
