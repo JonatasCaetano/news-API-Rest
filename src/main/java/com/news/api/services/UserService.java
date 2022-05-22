@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.UserRepository;
 
@@ -50,8 +51,8 @@ public class UserService {
 	public List<NewsDto> getSavedNews(String token) throws Exception{
 		User user = Authorization.isAuthorization(token, userRepository);
 		List<NewsDto> newsDtos = new ArrayList<>();
-		user.getSavedNews().forEach(News -> {
-			NewsDto newDto = new NewsDto(News);
+		user.getSavedNews().forEach(news -> {
+			NewsDto newDto = new NewsDto(news);
 			newsDtos.add(newDto);
 		});
 		return newsDtos;
@@ -60,11 +61,20 @@ public class UserService {
 	public List<NewsDto> getPosted(String token) throws Exception{
 		User user = Authorization.isAuthorization(token, userRepository);
 		List<NewsDto> newsDtos = new ArrayList<>();
-		user.getPosted().forEach(News -> {
-			NewsDto newDto = new NewsDto(News);
+		user.getPosted().forEach(news -> {
+			NewsDto newDto = new NewsDto(news);
 			newsDtos.add(newDto);
 		});
 		return newsDtos;
 	}
-	
+
+	public List<CompanyDto> getCurrentJob(String token) throws Exception{
+		User user = Authorization.isAuthorization(token, userRepository);
+		List<CompanyDto> companyDtos = new ArrayList<>();
+		user.getCurrentJob().forEach(company -> {
+			CompanyDto companyDto = new CompanyDto(company);
+			companyDtos.add(companyDto);
+		});
+		return companyDtos;
+	}
 }

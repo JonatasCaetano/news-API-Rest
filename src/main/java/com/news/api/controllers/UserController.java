@@ -15,6 +15,7 @@ import java.util.List;
 
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.services.UserService;
 
@@ -78,4 +79,14 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+
+	@GetMapping(path = "/jobs")
+	public ResponseEntity<List<CompanyDto>> getCurrentJob(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getCurrentJob(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
 }
