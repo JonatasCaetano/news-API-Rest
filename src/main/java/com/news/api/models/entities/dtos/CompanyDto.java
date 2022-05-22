@@ -8,11 +8,11 @@ public class CompanyDto {
 	private String name;
     private String image;
 
-    CompanyDto(){
+    public CompanyDto(){
         super();
     }
 
-    CompanyDto(Company company){
+    public CompanyDto(Company company){
         id = company.getId();
         name = company.getName();
         image = company.getImage();

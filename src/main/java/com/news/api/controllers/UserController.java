@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.news.api.models.entities.User;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.services.UserService;
 
 @RestController
@@ -48,6 +49,13 @@ public class UserController {
 		}
 	}
 
-	
+	@GetMapping(path = "/profile")
+	public ResponseEntity<UserDto> getProfile(@RequestHeader(name = "token") String token) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
 
 }

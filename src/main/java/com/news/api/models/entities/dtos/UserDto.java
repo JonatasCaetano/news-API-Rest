@@ -8,11 +8,11 @@ public class UserDto {
 	private String name;
     private String image;
 
-    UserDto(){
+    public UserDto(){
         super();
     }
 
-    UserDto(User user){
+    public UserDto(User user){
         id = user.getId();
         name = user.getName();
         image = user.getImage();

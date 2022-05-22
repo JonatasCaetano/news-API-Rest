@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.news.api.models.entities.User;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.repositories.UserRepository;
 
 @Service
@@ -37,6 +38,12 @@ public class UserService {
 	public User isAuthorization(String token) throws Exception {
 		return Authorization.isAuthorization(token, userRepository);
 	}
+
+	public UserDto getProfile(String token) throws Exception{
+		User user = Authorization.isAuthorization(token, userRepository);
+		return new UserDto(user);
+	}
+
 	
 	
 }
