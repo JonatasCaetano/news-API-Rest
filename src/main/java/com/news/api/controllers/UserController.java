@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.services.UserService;
 
 @RestController
@@ -58,4 +61,12 @@ public class UserController {
 		}
 	}
 
+	@GetMapping(path = "/saved")
+	public ResponseEntity<List<NewsDto>> getSavedNews(@RequestHeader(name = "token") String token) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getSavedNews(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
 }

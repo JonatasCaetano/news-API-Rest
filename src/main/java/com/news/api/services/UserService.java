@@ -2,12 +2,15 @@ package com.news.api.services;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.UserRepository;
 
 @Service
@@ -42,6 +45,16 @@ public class UserService {
 	public UserDto getProfile(String token) throws Exception{
 		User user = Authorization.isAuthorization(token, userRepository);
 		return new UserDto(user);
+	}
+
+	public List<NewsDto> getSavedNews(String token) throws Exception{
+		User user = Authorization.isAuthorization(token, userRepository);
+		List<NewsDto> newsDtos = new ArrayList<>();
+		user.getSavedNews().forEach(News -> {
+			NewsDto newDto = new NewsDto(News);
+			newsDtos.add(newDto);
+		});
+		return newsDtos;
 	}
 
 	
