@@ -58,6 +58,20 @@ public class Comment {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
+
+	public User getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public List<User> getLikes() {
+		return likes;
+	}
+	
+	
 	
 	
 	
