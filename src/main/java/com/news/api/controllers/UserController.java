@@ -69,4 +69,13 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+
+	@GetMapping(path = "/posted")
+	public ResponseEntity<List<NewsDto>> getPosted(@RequestHeader(name = "token") String token)  {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getPosted(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
 }

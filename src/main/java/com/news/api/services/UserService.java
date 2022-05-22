@@ -57,6 +57,14 @@ public class UserService {
 		return newsDtos;
 	}
 
-	
+	public List<NewsDto> getPosted(String token) throws Exception{
+		User user = Authorization.isAuthorization(token, userRepository);
+		List<NewsDto> newsDtos = new ArrayList<>();
+		user.getPosted().forEach(News -> {
+			NewsDto newDto = new NewsDto(News);
+			newsDtos.add(newDto);
+		});
+		return newsDtos;
+	}
 	
 }
