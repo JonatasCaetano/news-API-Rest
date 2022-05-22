@@ -77,4 +77,20 @@ public class UserService {
 		});
 		return companyDtos;
 	}
+
+	public List<CompanyDto> getHasWorked(String token) throws Exception{
+		User user = Authorization.isAuthorization(token, userRepository);
+		List<CompanyDto> companyDtos = new ArrayList<>();
+		user.getHasWorked().forEach(company -> {
+			CompanyDto companyDto = new CompanyDto(company);
+			companyDtos.add(companyDto);
+		});
+		return companyDtos;
+	}
+
+
+
+
+
+
 }

@@ -88,5 +88,15 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+	
+	@GetMapping(path = "/worked")
+	public ResponseEntity<List<CompanyDto>> getHasWorked(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getHasWorked(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
 
+	
 }
