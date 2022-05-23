@@ -33,4 +33,7 @@ public class CompanyService {
 		}
 	}
 	
+	public Company isAuthorization(String token) throws Exception {
+		return Authorization.isAuthorization(token, companyRepository);
+	}
 }
