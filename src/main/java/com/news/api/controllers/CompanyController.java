@@ -89,6 +89,15 @@ public class CompanyController {
 		}
 	}
 
+	@GetMapping(path = "/followers")
+	public ResponseEntity<List<UserDto>> getFollowers(@RequestHeader(name = "token") String token)  {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(companyService.getFollowers(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
 
 
 }

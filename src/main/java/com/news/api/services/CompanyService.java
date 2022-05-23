@@ -64,6 +64,12 @@ public class CompanyService {
 		return userDtos;
 	}
 
+	public List<UserDto> getFollowers(String token) throws Exception{
+		List<UserDto> userDtos = new ArrayList<>();
+		Authorization.isAuthorization(token, companyRepository).getFollowers().forEach(user->userDtos.add(new UserDto(user)));;
+		return userDtos;
+	}
+
 
 
 
