@@ -21,4 +21,16 @@ public class CompanyService {
 		company = companyRepository.insert(company);
 		return Authorization.login(company);
 	}
+
+	public String login(String email, String password) throws Exception {
+		Company company = companyRepository.findByEmail(email).get();
+		if(company.getPassword().equals(password)) {
+			company.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
+			companyRepository.save(company);
+			return Authorization.login(company);
+		}else {
+			throw new Exception();
+		}
+	}
+	
 }
