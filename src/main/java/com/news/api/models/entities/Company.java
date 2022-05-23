@@ -18,6 +18,7 @@ public class Company {
 	private String password;
 	private LocalDateTime creationDate;
 	private String image;
+	private LocalDateTime lastLogin;
 	@DocumentReference(lazy = true, collection = "news")
 	private List<News> posted = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "user")
@@ -105,6 +106,15 @@ public class Company {
 		return followers;
 	}
 	
-	
+	public LocalDateTime getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(LocalDateTime lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+
+
 	
 }
