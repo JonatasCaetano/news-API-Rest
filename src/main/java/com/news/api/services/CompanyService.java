@@ -11,6 +11,7 @@ import java.util.List;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.repositories.CompanyRepository;
 
 @Service
@@ -49,5 +50,11 @@ public class CompanyService {
 		List<NewsDto> newsDtos = new ArrayList<>();
 		Authorization.isAuthorization(token, companyRepository).getPosted().forEach(news->newsDtos.add(new NewsDto(news)));;
 		return newsDtos;
+	}
+
+	public List<UserDto> getCurrentWriters(String token) throws Exception{
+		List<UserDto> userDtos = new ArrayList<>();
+		Authorization.isAuthorization(token, companyRepository).getCurrentWriters().forEach(user->userDtos.add(new UserDto(user)));;
+		return userDtos;
 	}
 }

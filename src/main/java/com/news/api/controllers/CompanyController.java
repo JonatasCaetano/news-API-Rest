@@ -16,6 +16,7 @@ import java.util.List;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.services.CompanyService;
 
 @RestController
@@ -69,4 +70,16 @@ public class CompanyController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+
+	@GetMapping(path = "/writers")
+	public ResponseEntity<List<UserDto>> getCurrentWriters(@RequestHeader(name = "token") String token)  {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(companyService.getCurrentWriters(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
+
+
 }
