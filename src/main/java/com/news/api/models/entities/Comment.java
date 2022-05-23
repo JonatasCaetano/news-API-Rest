@@ -8,7 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Document
 public class Comment {
@@ -18,10 +17,8 @@ public class Comment {
 	private String body;
 	private LocalDateTime creationDate;
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference
 	private User author;
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference
 	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {

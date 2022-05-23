@@ -8,8 +8,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Document
 public class Company {
 
@@ -21,16 +19,12 @@ public class Company {
 	private LocalDateTime creationDate;
 	private String image;
 	@DocumentReference(lazy = true, collection = "news")
-	@JsonBackReference
 	private List<News> posted = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference
 	private List<User> currentWriters = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference
 	private List<User> formerWriters = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference
 	private List<User> followers = new ArrayList<>();
 	
 	public Company() {
