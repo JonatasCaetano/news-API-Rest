@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
+import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.services.CompanyService;
 
 @RestController
@@ -58,4 +61,12 @@ public class CompanyController {
 		}
 	}
 
+	@GetMapping(path = "/posted")
+	public ResponseEntity<List<NewsDto>> getPosted(@RequestHeader(name = "token") String token)  {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(companyService.getPosted(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
 }

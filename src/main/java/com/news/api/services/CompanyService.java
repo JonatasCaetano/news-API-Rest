@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
+import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.CompanyRepository;
 
 @Service
@@ -42,4 +45,9 @@ public class CompanyService {
 		return new CompanyDto(Authorization.isAuthorization(token, companyRepository));
 	}
 
+	public List<NewsDto> getPosted(String token) throws Exception{
+		List<NewsDto> newsDtos = new ArrayList<>();
+		Authorization.isAuthorization(token, companyRepository).getPosted().forEach(news->newsDtos.add(new NewsDto(news)));;
+		return newsDtos;
+	}
 }
