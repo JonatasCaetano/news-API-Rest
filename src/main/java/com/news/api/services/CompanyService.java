@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import com.news.api.models.entities.Company;
+import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.repositories.CompanyRepository;
 
 @Service
@@ -36,4 +37,9 @@ public class CompanyService {
 	public Company isAuthorization(String token) throws Exception {
 		return Authorization.isAuthorization(token, companyRepository);
 	}
+
+	public CompanyDto getProfile(String token) throws Exception{
+		return new CompanyDto(Authorization.isAuthorization(token, companyRepository));
+	}
+
 }

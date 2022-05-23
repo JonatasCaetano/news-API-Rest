@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.news.api.models.entities.Company;
+import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.services.CompanyService;
 
 @RestController
@@ -47,4 +48,14 @@ public class CompanyController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}
+
+	@GetMapping(path = "/profile")
+	public ResponseEntity<CompanyDto> getProfile(@RequestHeader(name = "token") String token) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(companyService.getProfile(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
 }
