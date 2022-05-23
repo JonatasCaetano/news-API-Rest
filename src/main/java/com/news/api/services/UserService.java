@@ -70,6 +70,12 @@ public class UserService {
 		return companyDtos;
 	}
 
+	public List<CompanyDto> getFollowing(String token) throws Exception{
+		List<CompanyDto> companyDtos = new ArrayList<>();
+		Authorization.isAuthorization(token, userRepository).getFollowing().forEach(company->companyDtos.add(new CompanyDto(company)));
+		return companyDtos;
+	}
+
 
 
 

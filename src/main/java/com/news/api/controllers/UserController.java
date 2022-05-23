@@ -98,5 +98,14 @@ public class UserController {
 		}
 	}
 
+	@GetMapping(path = "/following")
+	public ResponseEntity<List<CompanyDto>> getFollowing(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getFollowing(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
 	
 }
