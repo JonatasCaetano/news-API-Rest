@@ -57,4 +57,14 @@ public class CompanyService {
 		Authorization.isAuthorization(token, companyRepository).getCurrentWriters().forEach(user->userDtos.add(new UserDto(user)));;
 		return userDtos;
 	}
+
+	public List<UserDto> getFormerWriters(String token) throws Exception{
+		List<UserDto> userDtos = new ArrayList<>();
+		Authorization.isAuthorization(token, companyRepository).getFormerWriters().forEach(user->userDtos.add(new UserDto(user)));;
+		return userDtos;
+	}
+
+
+
+
 }

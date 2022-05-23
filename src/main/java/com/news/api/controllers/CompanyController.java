@@ -80,6 +80,15 @@ public class CompanyController {
 		}
 	}
 
+	@GetMapping(path = "/former")
+	public ResponseEntity<List<UserDto>> getFormerWriters(@RequestHeader(name = "token") String token)  {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(companyService.getFormerWriters(token));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
 
 
 }
