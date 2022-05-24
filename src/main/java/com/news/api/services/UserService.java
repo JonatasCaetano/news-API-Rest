@@ -83,9 +83,12 @@ public class UserService {
 	}
 
 	public void addFollowing(String token, String id) throws Exception{
-		Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get());
+		userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get()));
 	}
 
+	public void removeFollowing(String token, String id) throws Exception{
+		userRepository.save(Authorization.isAuthorization(token, userRepository).removeFollowing(companyRepository.findById(id).get()));
+	}
 
 
 

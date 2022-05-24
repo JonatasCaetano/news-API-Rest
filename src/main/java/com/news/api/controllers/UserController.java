@@ -109,10 +109,20 @@ public class UserController {
 		}
 	}
 
-	@PutMapping(path = "/following/{id}")
+	@PutMapping(path = "/following/add/{id}")
 	public ResponseEntity<Void> addFollowing(@RequestHeader(name = "token") String token, @PathVariable String id) throws Exception{
 		try {
 			userService.addFollowing(token, id);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
+	}
+
+	@PutMapping(path = "/following/remove/{id}")
+	public ResponseEntity<Void> removeFollowing(@RequestHeader(name = "token") String token, @PathVariable String id) throws Exception{
+		try {
+			userService.removeFollowing(token, id);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

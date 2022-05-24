@@ -141,10 +141,18 @@ public class User {
 		return likedComments;
 	}
 
-	public void addFollowing(Company company){
+	public User addFollowing(Company company){
 		if(!following.contains(company)){
 			following.add(company);
 		}
+		return this;
+	}
+
+	public User removeFollowing(Company company){
+		if(following.contains(company)){
+			following.remove(company);
+		}
+		return this;
 	}
 	
 	public UserDto toUserDto() {
