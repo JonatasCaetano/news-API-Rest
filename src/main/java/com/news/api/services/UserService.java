@@ -26,6 +26,10 @@ public class UserService {
 	@Autowired
 	@Lazy
 	private CompanyRepository companyRepository;
+
+	@Autowired
+	@Lazy
+	private CompanyService companyService;
 	
 	public String createAccount(User user) {
 		user.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
@@ -74,7 +78,7 @@ public class UserService {
 	}
 
 	public void addFollowing(String token, String id) throws Exception{
-		userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get()));
+		companyService.addFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get())), id);
 	}
 
 	public void removeFollowing(String token, String id) throws Exception{

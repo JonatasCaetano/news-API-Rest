@@ -117,6 +117,20 @@ public class Company {
 		this.lastLogin = lastLogin;
 	}
 
+	public Company addFollower(User user){
+		if(!followers.contains(user)){
+			followers.add(user);
+		}
+		return this;
+	}
+
+	public Company removeFollowing(User user){
+		if(followers.contains(user)){
+			followers.remove(user);
+		}
+		return this;
+	}
+
 	public CompanyDto toCompanyDto() {
 		return new CompanyDto(this);
 	}

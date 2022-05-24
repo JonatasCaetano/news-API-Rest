@@ -63,7 +63,10 @@ public class CompanyService {
 		return Authorization.isAuthorization(token, companyRepository).getFollowers().stream().map(User::toUserDto).toList();
 	}
 
-
+	public void addFollower(User user, String id){
+		companyRepository.save(companyRepository.findById(id).get().addFollower(user));
+	
+	}
 
 
 }
