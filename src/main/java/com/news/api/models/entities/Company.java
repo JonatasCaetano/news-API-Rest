@@ -124,7 +124,7 @@ public class Company {
 		return this;
 	}
 
-	public Company removeFollowing(User user){
+	public Company removeFollower(User user){
 		if(followers.contains(user)){
 			followers.remove(user);
 		}

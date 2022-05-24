@@ -14,7 +14,6 @@ import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
-import com.news.api.repositories.CompanyRepository;
 import com.news.api.repositories.UserRepository;
 
 @Service
@@ -22,10 +21,6 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	@Lazy
-	private CompanyRepository companyRepository;
 
 	@Autowired
 	@Lazy
@@ -78,11 +73,11 @@ public class UserService {
 	}
 
 	public void addFollowing(String token, String id) throws Exception{
-		companyService.addFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get())), id);
+		companyService.addFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyService.findById(id).get())), id);
 	}
 
 	public void removeFollowing(String token, String id) throws Exception{
-		userRepository.save(Authorization.isAuthorization(token, userRepository).removeFollowing(companyRepository.findById(id).get()));
+		companyService.removeFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).removeFollowing(companyService.findById(id).get())), id);
 	}
 
 

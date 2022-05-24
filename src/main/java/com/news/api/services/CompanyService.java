@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
@@ -68,5 +69,16 @@ public class CompanyService {
 	
 	}
 
+	public void removeFollower(User user, String id){
+		companyRepository.save(companyRepository.findById(id).get().removeFollower(user));
+	
+	}
 
+	public Company save(Company company){
+		return companyRepository.save(company);
+	}
+
+	public Optional<Company> findById(String id){
+		return companyRepository.findById(id);
+	}
 }
