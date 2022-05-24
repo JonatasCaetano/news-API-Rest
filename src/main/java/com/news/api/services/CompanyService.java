@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.news.api.models.entities.Company;
+import com.news.api.models.entities.News;
+import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
@@ -47,27 +48,19 @@ public class CompanyService {
 	}
 
 	public List<NewsDto> getPosted(String token) throws Exception{
-		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getPosted().forEach(news->newsDtos.add(news.toNewsDto()));;
-		return newsDtos;
+		return Authorization.isAuthorization(token, companyRepository).getPosted().stream().map(News::toNewsDto).toList();
 	}
 
 	public List<UserDto> getCurrentWriters(String token) throws Exception{
-		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getCurrentWriters().forEach(user->userDtos.add(user.toUserDto()));;
-		return userDtos;
+		return Authorization.isAuthorization(token, companyRepository).getCurrentWriters().stream().map(User::toUserDto).toList();
 	}
 
 	public List<UserDto> getFormerWriters(String token) throws Exception{
-		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getFormerWriters().forEach(user->userDtos.add(user.toUserDto()));;
-		return userDtos;
+		return Authorization.isAuthorization(token, companyRepository).getFormerWriters().stream().map(User::toUserDto).toList();
 	}
 
 	public List<UserDto> getFollowers(String token) throws Exception{
-		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getFollowers().forEach(user->userDtos.add(user.toUserDto()));;
-		return userDtos;
+		return Authorization.isAuthorization(token, companyRepository).getFollowers().stream().map(User::toUserDto).toList();
 	}
 
 

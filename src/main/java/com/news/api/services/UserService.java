@@ -2,13 +2,14 @@ package com.news.api.services;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.news.api.models.entities.Company;
+import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.entities.dtos.CompanyDto;
@@ -53,33 +54,23 @@ public class UserService {
 	}
 
 	public List<NewsDto> getSavedNews(String token) throws Exception{
-		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getSavedNews().forEach(news->newsDtos.add(news.toNewsDto()));
-		return newsDtos;
+		return Authorization.isAuthorization(token, userRepository).getSavedNews().stream().map(News::toNewsDto).toList();
 	}
 
 	public List<NewsDto> getPosted(String token) throws Exception{
-		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getPosted().forEach(news->newsDtos.add(news.toNewsDto()));;
-		return newsDtos;
+		return Authorization.isAuthorization(token, userRepository).getPosted().stream().map(News::toNewsDto).toList();
 	}
 
 	public List<CompanyDto> getCurrentJob(String token) throws Exception{
-		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getCurrentJob().forEach(company->companyDtos.add(company.toCompanyDto()));;
-		return companyDtos;
+		return Authorization.isAuthorization(token, userRepository).getCurrentJob().stream().map(Company::toCompanyDto).toList();
 	}
 
 	public List<CompanyDto> getHasWorked(String token) throws Exception{
-		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getHasWorked().forEach(company->companyDtos.add(company.toCompanyDto()));
-		return companyDtos;
+		return Authorization.isAuthorization(token, userRepository).getHasWorked().stream().map(Company::toCompanyDto).toList();
 	}
 
 	public List<CompanyDto> getFollowing(String token) throws Exception{
-		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getFollowing().forEach(company->companyDtos.add(company.toCompanyDto()));
-		return companyDtos;
+		return Authorization.isAuthorization(token, userRepository).getFollowing().stream().map(Company::toCompanyDto).toList();
 	}
 
 	public void addFollowing(String token, String id) throws Exception{
