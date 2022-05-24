@@ -43,30 +43,30 @@ public class CompanyService {
 	}
 
 	public CompanyDto getProfile(String token) throws Exception{
-		return new CompanyDto(Authorization.isAuthorization(token, companyRepository));
+		return Authorization.isAuthorization(token, companyRepository).toCompanyDto();
 	}
 
 	public List<NewsDto> getPosted(String token) throws Exception{
 		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getPosted().forEach(news->newsDtos.add(new NewsDto(news)));;
+		Authorization.isAuthorization(token, companyRepository).getPosted().forEach(news->newsDtos.add(news.toNewsDto()));;
 		return newsDtos;
 	}
 
 	public List<UserDto> getCurrentWriters(String token) throws Exception{
 		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getCurrentWriters().forEach(user->userDtos.add(new UserDto(user)));;
+		Authorization.isAuthorization(token, companyRepository).getCurrentWriters().forEach(user->userDtos.add(user.toUserDto()));;
 		return userDtos;
 	}
 
 	public List<UserDto> getFormerWriters(String token) throws Exception{
 		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getFormerWriters().forEach(user->userDtos.add(new UserDto(user)));;
+		Authorization.isAuthorization(token, companyRepository).getFormerWriters().forEach(user->userDtos.add(user.toUserDto()));;
 		return userDtos;
 	}
 
 	public List<UserDto> getFollowers(String token) throws Exception{
 		List<UserDto> userDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, companyRepository).getFollowers().forEach(user->userDtos.add(new UserDto(user)));;
+		Authorization.isAuthorization(token, companyRepository).getFollowers().forEach(user->userDtos.add(user.toUserDto()));;
 		return userDtos;
 	}
 

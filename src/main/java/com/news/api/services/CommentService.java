@@ -13,6 +13,10 @@ public class CommentService {
 	private CommentRepository commentRepository;
 
 	public CommentDto getComment(String id){
-		return new CommentDto(commentRepository.findById(id).get());
+		return commentRepository.findById(id).get().toCommentDto();
 	}
+
+
+
+
 }

@@ -49,41 +49,41 @@ public class UserService {
 	}
 
 	public UserDto getProfile(String token) throws Exception{
-		return new UserDto(Authorization.isAuthorization(token, userRepository));
+		return Authorization.isAuthorization(token, userRepository).toUserDto();
 	}
 
 	public List<NewsDto> getSavedNews(String token) throws Exception{
 		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getSavedNews().forEach(news->newsDtos.add(new NewsDto(news)));
+		Authorization.isAuthorization(token, userRepository).getSavedNews().forEach(news->newsDtos.add(news.toNewsDto()));
 		return newsDtos;
 	}
 
 	public List<NewsDto> getPosted(String token) throws Exception{
 		List<NewsDto> newsDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getPosted().forEach(news->newsDtos.add(new NewsDto(news)));;
+		Authorization.isAuthorization(token, userRepository).getPosted().forEach(news->newsDtos.add(news.toNewsDto()));;
 		return newsDtos;
 	}
 
 	public List<CompanyDto> getCurrentJob(String token) throws Exception{
 		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getCurrentJob().forEach(company->companyDtos.add(new CompanyDto(company)));;
+		Authorization.isAuthorization(token, userRepository).getCurrentJob().forEach(company->companyDtos.add(company.toCompanyDto()));;
 		return companyDtos;
 	}
 
 	public List<CompanyDto> getHasWorked(String token) throws Exception{
 		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getHasWorked().forEach(company->companyDtos.add(new CompanyDto(company)));
+		Authorization.isAuthorization(token, userRepository).getHasWorked().forEach(company->companyDtos.add(company.toCompanyDto()));
 		return companyDtos;
 	}
 
 	public List<CompanyDto> getFollowing(String token) throws Exception{
 		List<CompanyDto> companyDtos = new ArrayList<>();
-		Authorization.isAuthorization(token, userRepository).getFollowing().forEach(company->companyDtos.add(new CompanyDto(company)));
+		Authorization.isAuthorization(token, userRepository).getFollowing().forEach(company->companyDtos.add(company.toCompanyDto()));
 		return companyDtos;
 	}
 
 	public void addFollowing(String token, String id) throws Exception{
-		Authorization.isAuthorization(token, userRepository).getFollowing().add(companyRepository.findById(id).get());
+		Authorization.isAuthorization(token, userRepository).addFollowing(companyRepository.findById(id).get());
 	}
 
 

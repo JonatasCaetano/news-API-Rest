@@ -13,6 +13,14 @@ public class NewsService {
 	private NewsRepository newsRepository;
 
 	public NewsDto getNews(String id){
-		return new NewsDto(newsRepository.findById(id).get());
+		return newsRepository.findById(id).get().toNewsDto();
 	}
+
+
+
+
+
+
+
+
 }

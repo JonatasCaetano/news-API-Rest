@@ -140,6 +140,12 @@ public class User {
 	public List<Comment> getLikedComments() {
 		return likedComments;
 	}
+
+	public void addFollowing(Company company){
+		if(!following.contains(company)){
+			following.add(company);
+		}
+	}
 	
 	public UserDto toUserDto() {
 		return new UserDto(this);
