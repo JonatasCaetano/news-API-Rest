@@ -19,7 +19,7 @@ public class CommentController {
 	private CommentService commentService;
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<CommentDto> getNews(@PathVariable String id){
+	public ResponseEntity<CommentDto> getComment(@PathVariable String id){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(commentService.getComment(id));
 		} catch (Exception e) {

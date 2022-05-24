@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
+import com.news.api.repositories.CompanyRepository;
 import com.news.api.repositories.UserRepository;
 
 @Service
@@ -19,6 +21,10 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	@Lazy
+	private CompanyRepository companyRepository;
 	
 	public String createAccount(User user) {
 		user.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
@@ -76,7 +82,9 @@ public class UserService {
 		return companyDtos;
 	}
 
-
+	public void addFollowing(String token, String id) throws Exception{
+		Authorization.isAuthorization(token, userRepository).getFollowing().add(companyRepository.findById(id).get());
+	}
 
 
 
