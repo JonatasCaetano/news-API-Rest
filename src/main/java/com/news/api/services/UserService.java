@@ -102,6 +102,12 @@ public class UserService {
 		}	
 	}
 
+	//Internal methods
+
+	public Optional<User> findById(String id){
+		return userRepository.findById(id);
+	}
+
 	public void addCurrentJobs(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
 		Optional<Company> optional = companyService.findById(companyId);
 		if(!optional.isPresent()){
@@ -126,12 +132,13 @@ public class UserService {
 		userRepository.save(user.addHasWorked(optional.get()));
 	}
 
-	//Internal methods
-
-	public Optional<User> findById(String id){
-		return userRepository.findById(id);
+	public void removeHasWorked(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<Company> optional = companyService.findById(companyId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userRepository.save(user.removeHasWorked(optional.get()));
 	}
-
 
 
 }

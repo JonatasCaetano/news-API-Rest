@@ -88,7 +88,7 @@ public class CompanyService {
 			throw new UserInvalidException();
 		}
 		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())).getId());
-		addFormerWriters(token, userId);
+		removeFormerWriters(token, userId);
 	}
 
 	public void removeCurrentWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
@@ -97,6 +97,7 @@ public class CompanyService {
 			throw new UserInvalidException();
 		}
 		userService.removeCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeCurrentWriters(optional.get())).getId());
+		addFormerWriters(token, userId);
 	}
 
 	//Internal methods
@@ -125,6 +126,14 @@ public class CompanyService {
 			throw new UserInvalidException();
 		}
 		userService.addHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addFormerWriters(optional.get())).getId());
+	}
+
+	public void removeFormerWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<User> optional = userService.findById(userId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userService.removeHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeFormerWriters(optional.get())).getId());
 	}
 
 
