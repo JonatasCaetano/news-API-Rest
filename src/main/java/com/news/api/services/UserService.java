@@ -110,6 +110,14 @@ public class UserService {
 		userRepository.save(user.addCurrentJobs(optional.get()));
 	}
 
+	public void removeCurrentJobs(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<Company> optional = companyService.findById(companyId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userRepository.save(user.removeCurrentJobs(optional.get()));
+	}
+
 	//Internal methods
 
 	public Optional<User> findById(String id){

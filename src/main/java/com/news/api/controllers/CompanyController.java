@@ -134,10 +134,27 @@ public class CompanyController {
 		}
 	}
 
-	@PutMapping(path = "/writers/{userId}")
+	@PutMapping(path = "/writers/add/{userId}")
 	public ResponseEntity<Void> addCurrentWriters(@RequestHeader(name = "token") String token, @PathVariable String userId){
 		try {
 			companyService.addCurrentWriters(token, userId);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (CompanyInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		
+	}
+
+	@PutMapping(path = "/writers/remove/{userId}")
+	public ResponseEntity<Void> removeCurrentWriters(@RequestHeader(name = "token") String token, @PathVariable String userId){
+		try {
+			companyService.removeCurrentWriters(token, userId);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

@@ -90,6 +90,14 @@ public class CompanyService {
 		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())).getId());
 	}
 
+	public void removeCurrentWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<User> optional = userService.findById(userId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userService.removeCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeCurrentWriters(optional.get())).getId());
+	}
+
 	//Internal methods
 
 	public void addFollower(User user, String id){
