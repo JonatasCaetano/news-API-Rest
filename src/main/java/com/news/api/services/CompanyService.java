@@ -87,7 +87,7 @@ public class CompanyService {
 		if(!optional.isPresent()){
 			throw new UserInvalidException();
 		}
-		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())).getId());
+		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())));
 		removeFormerWriters(token, userId);
 	}
 
@@ -96,19 +96,19 @@ public class CompanyService {
 		if(!optional.isPresent()){
 			throw new UserInvalidException();
 		}
-		userService.removeCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeCurrentWriters(optional.get())).getId());
+		userService.removeCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeCurrentWriters(optional.get())));
 		addFormerWriters(token, userId);
 	}
 
 	//Internal methods
 
-	public void addFollower(User user, String id){
-		companyRepository.save(companyRepository.findById(id).get().addFollower(user));
+	public void addFollower(User user, Company company){
+		companyRepository.save(company.addFollower(user));
 	
 	}
 
-	public void removeFollower(User user, String id){
-		companyRepository.save(companyRepository.findById(id).get().removeFollower(user));
+	public void removeFollower(User user, Company company){
+		companyRepository.save(company.removeFollower(user));
 	
 	}
 
@@ -125,7 +125,7 @@ public class CompanyService {
 		if(!optional.isPresent()){
 			throw new UserInvalidException();
 		}
-		userService.addHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addFormerWriters(optional.get())).getId());
+		userService.addHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addFormerWriters(optional.get())));
 	}
 
 	public void removeFormerWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
@@ -133,7 +133,7 @@ public class CompanyService {
 		if(!optional.isPresent()){
 			throw new UserInvalidException();
 		}
-		userService.removeHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeFormerWriters(optional.get())).getId());
+		userService.removeHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeFormerWriters(optional.get())));
 	}
 
 

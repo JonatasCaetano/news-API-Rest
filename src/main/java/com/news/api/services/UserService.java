@@ -84,19 +84,19 @@ public class UserService {
 		return AuthorizationService.isAuthorization(token, userRepository).getFollowing().stream().map(Company::toCompanyDto).toList();
 	}
 
-	public void addFollowing(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
-		Optional<Company> optional = companyService.findById(id);
+	public void addFollowing(String token, String CompanyId) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
+		Optional<Company> optional = companyService.findById(CompanyId);
 		if(optional.isPresent()){
-			companyService.addFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).addFollowing(companyService.findById(id).get())), id);
+			companyService.addFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).addFollowing(optional.get())), optional.get());
 		}else{
 			throw new CompanyInvalidException();
 		}
 	}
 
-	public void removeFollowing(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
-		Optional<Company> optional = companyService.findById(id);
+	public void removeFollowing(String token, String CompanyId) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
+		Optional<Company> optional = companyService.findById(CompanyId);
 		if(optional.isPresent()){
-			companyService.removeFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).removeFollowing(companyService.findById(id).get())), id);
+			companyService.removeFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).removeFollowing(optional.get())), optional.get());
 		}else{
 			throw new CompanyInvalidException();
 		}	
@@ -108,36 +108,20 @@ public class UserService {
 		return userRepository.findById(id);
 	}
 
-	public void addCurrentJobs(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
-		Optional<Company> optional = companyService.findById(companyId);
-		if(!optional.isPresent()){
-			throw new UserInvalidException();
-		}
-		userRepository.save(user.addCurrentJobs(optional.get()));
+	public void addCurrentJobs(User user, Company company) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		userRepository.save(user.addCurrentJobs(company));
 	}
 
-	public void removeCurrentJobs(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
-		Optional<Company> optional = companyService.findById(companyId);
-		if(!optional.isPresent()){
-			throw new UserInvalidException();
-		}
-		userRepository.save(user.removeCurrentJobs(optional.get()));
+	public void removeCurrentJobs(User user, Company company) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		userRepository.save(user.removeCurrentJobs(company));
 	}
 
-	public void addHasWorked(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
-		Optional<Company> optional = companyService.findById(companyId);
-		if(!optional.isPresent()){
-			throw new UserInvalidException();
-		}
-		userRepository.save(user.addHasWorked(optional.get()));
+	public void addHasWorked(User user, Company company) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		userRepository.save(user.addHasWorked(company));
 	}
 
-	public void removeHasWorked(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
-		Optional<Company> optional = companyService.findById(companyId);
-		if(!optional.isPresent()){
-			throw new UserInvalidException();
-		}
-		userRepository.save(user.removeHasWorked(optional.get()));
+	public void removeHasWorked(User user, Company company) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		userRepository.save(user.removeHasWorked(company));
 	}
 
 

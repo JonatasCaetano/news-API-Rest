@@ -148,10 +148,10 @@ public class UserController {
 		}
 	}
 
-	@PutMapping(path = "/following/add/{id}")
-	public ResponseEntity<Void> addFollowing(@RequestHeader(name = "token") String token, @PathVariable String id){
+	@PutMapping(path = "/following/add/{CompanyId}")
+	public ResponseEntity<Void> addFollowing(@RequestHeader(name = "token") String token, @PathVariable String CompanyId){
 		try {
-			userService.addFollowing(token, id);
+			userService.addFollowing(token, CompanyId);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -165,10 +165,10 @@ public class UserController {
 		
 	}
 
-	@PutMapping(path = "/following/remove/{id}")
-	public ResponseEntity<Void> removeFollowing(@RequestHeader(name = "token") String token, @PathVariable String id){
+	@PutMapping(path = "/following/remove/{CompanyId}")
+	public ResponseEntity<Void> removeFollowing(@RequestHeader(name = "token") String token, @PathVariable String CompanyId){
 		try {
-			userService.removeFollowing(token, id);
+			userService.removeFollowing(token, CompanyId);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
