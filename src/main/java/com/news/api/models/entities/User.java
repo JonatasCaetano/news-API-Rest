@@ -131,6 +131,20 @@ public class User {
 		return hasWorked;
 	}
 
+	public User addHasWorked(Company company){
+		if(!hasWorked.contains(company)){
+			hasWorked.add(company);
+		}
+		return this;
+	}
+
+	public User removeHasWorked(Company company){
+		if(hasWorked.contains(company)){
+			hasWorked.remove(company);
+		}
+		return this;
+	}
+
 	public List<Company> getFollowing() {
 		return following;
 	}

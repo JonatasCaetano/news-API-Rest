@@ -88,6 +88,7 @@ public class CompanyService {
 			throw new UserInvalidException();
 		}
 		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())).getId());
+		addFormerWriters(token, userId);
 	}
 
 	public void removeCurrentWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
@@ -118,6 +119,13 @@ public class CompanyService {
 		return companyRepository.findById(id);
 	}
 
+	public void addFormerWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<User> optional = userService.findById(userId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userService.addHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addFormerWriters(optional.get())).getId());
+	}
 
 
 

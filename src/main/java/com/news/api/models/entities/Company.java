@@ -119,6 +119,20 @@ public class Company {
 		return formerWriters;
 	}
 
+	public Company addFormerWriters(User user) {
+		if(!formerWriters.contains(user)){
+			formerWriters.add(user);
+		}
+		return this;
+	}
+
+	public Company removeFormerWriters(User user) {
+		if(formerWriters.contains(user)){
+			formerWriters.remove(user);
+		}
+		return this;
+	}
+
 	public List<User> getFollowers() {
 		return followers;
 	}
