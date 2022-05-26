@@ -3,6 +3,7 @@ package com.news.api.services;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,6 +13,8 @@ import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.PasswordException;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.UserRepository;
@@ -33,14 +36,19 @@ public class UserService {
 		return Authorization.login(user);
 	}
 	
-	public String login(String email, String password) throws Exception {
-		User user = userRepository.findByEmail(email).get();
-		if(user.getPassword().equals(password)) {
+	public String login(String email, String password) throws PasswordException, EmailException {
+		Optional<User> optional = userRepository.findByEmail(email);
+		
+		if(!optional.isPresent()){
+			throw new EmailException();
+		}
+		User user = optional.get();
+		if(user.isPassword(password)) {
 			user.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
 			userRepository.save(user);
 			return Authorization.login(user);
 		}else {
-			throw new Exception();
+			throw new PasswordException();
 		}
 	}
 	

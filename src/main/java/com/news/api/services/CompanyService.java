@@ -14,6 +14,8 @@ import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.PasswordException;
 import com.news.api.repositories.CompanyRepository;
 
 @Service
@@ -29,14 +31,21 @@ public class CompanyService {
 		return Authorization.login(company);
 	}
 
-	public String login(String email, String password) throws Exception {
-		Company company = companyRepository.findByEmail(email).get();
-		if(company.getPassword().equals(password)) {
+	public String login(String email, String password) throws PasswordException, EmailException {
+		
+		Optional<Company> optional = companyRepository.findByEmail(email);
+		
+		if(!optional.isPresent()){
+			throw new EmailException();
+		}
+		Company company = optional.get();
+
+		if(company.isPassword(password)) {
 			company.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
 			companyRepository.save(company);
 			return Authorization.login(company);
 		}else {
-			throw new Exception();
+			throw new PasswordException();
 		}
 	}
 	

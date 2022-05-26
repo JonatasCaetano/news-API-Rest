@@ -17,6 +17,8 @@ import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
+import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.PasswordException;
 import com.news.api.services.CompanyService;
 
 @RestController
@@ -39,8 +41,10 @@ public class CompanyController {
 	public ResponseEntity<String> login(@RequestParam(name = "email" ) String email, @RequestParam(name = "password") String password) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(companyService.login(email, password));
-		}catch (Exception e) {
+		}catch(PasswordException e){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}catch (EmailException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 

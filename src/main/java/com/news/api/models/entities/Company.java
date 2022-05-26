@@ -131,6 +131,14 @@ public class Company {
 		return this;
 	}
 
+	public boolean isPassword(String password){
+		if(password.equals(this.password)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 	public CompanyDto toCompanyDto() {
 		return new CompanyDto(this);
 	}

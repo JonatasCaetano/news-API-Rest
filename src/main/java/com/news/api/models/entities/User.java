@@ -154,6 +154,14 @@ public class User {
 		}
 		return this;
 	}
+
+	public boolean isPassword(String password){
+		if(password.equals(this.password)){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
 	public UserDto toUserDto() {
 		return new UserDto(this);
