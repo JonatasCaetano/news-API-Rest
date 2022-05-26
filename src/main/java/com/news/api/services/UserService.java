@@ -1,5 +1,6 @@
 package com.news.api.services;
 
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
@@ -14,7 +15,10 @@ import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.PasswordException;
+import com.news.api.models.exceptions.UnauthorizedException;
+import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.UserRepository;
@@ -29,14 +33,14 @@ public class UserService {
 	@Lazy
 	private CompanyService companyService;
 	
-	public String createAccount(User user) {
+	public String createAccount(User user) throws NoSuchAlgorithmException {
 		user.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
 		user.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
 		user = userRepository.insert(user);
-		return Authorization.login(user);
+		return AuthorizationService.login(user);
 	}
 	
-	public String login(String email, String password) throws PasswordException, EmailException {
+	public String login(String email, String password) throws PasswordException, EmailException, NoSuchAlgorithmException {
 		Optional<User> optional = userRepository.findByEmail(email);
 		
 		if(!optional.isPresent()){
@@ -46,46 +50,56 @@ public class UserService {
 		if(user.isPassword(password)) {
 			user.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
 			userRepository.save(user);
-			return Authorization.login(user);
+			return AuthorizationService.login(user);
 		}else {
 			throw new PasswordException();
 		}
 	}
 	
-	public User isAuthorization(String token) throws Exception {
-		return Authorization.isAuthorization(token, userRepository);
+	public User isAuthorization(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository);
 	}
 
-	public UserDto getProfile(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).toUserDto();
+	public UserDto getProfile(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).toUserDto();
 	}
 
-	public List<NewsDto> getSavedNews(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).getSavedNews().stream().map(News::toNewsDto).toList();
+	public List<NewsDto> getSavedNews(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getSavedNews().stream().map(News::toNewsDto).toList();
 	}
 
-	public List<NewsDto> getPosted(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).getPosted().stream().map(News::toNewsDto).toList();
+	public List<NewsDto> getPosted(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getPosted().stream().map(News::toNewsDto).toList();
 	}
 
-	public List<CompanyDto> getCurrentJob(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).getCurrentJob().stream().map(Company::toCompanyDto).toList();
+	public List<CompanyDto> getCurrentJob(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getCurrentJob().stream().map(Company::toCompanyDto).toList();
 	}
 
-	public List<CompanyDto> getHasWorked(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).getHasWorked().stream().map(Company::toCompanyDto).toList();
+	public List<CompanyDto> getHasWorked(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getHasWorked().stream().map(Company::toCompanyDto).toList();
 	}
 
-	public List<CompanyDto> getFollowing(String token) throws Exception{
-		return Authorization.isAuthorization(token, userRepository).getFollowing().stream().map(Company::toCompanyDto).toList();
+	public List<CompanyDto> getFollowing(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getFollowing().stream().map(Company::toCompanyDto).toList();
 	}
 
-	public void addFollowing(String token, String id) throws Exception{
-		companyService.addFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).addFollowing(companyService.findById(id).get())), id);
+	public void addFollowing(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
+		Optional<Company> optional = companyService.findById(id);
+		if(optional.isPresent()){
+			companyService.addFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).addFollowing(companyService.findById(id).get())), id);
+		}else{
+			throw new CompanyInvalidException();
+		}
 	}
 
-	public void removeFollowing(String token, String id) throws Exception{
-		companyService.removeFollower(userRepository.save(Authorization.isAuthorization(token, userRepository).removeFollowing(companyService.findById(id).get())), id);
+	public void removeFollowing(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException, UserInvalidException{
+		Optional<Company> optional = companyService.findById(id);
+		if(optional.isPresent()){
+			companyService.removeFollower(userRepository.save(AuthorizationService.isAuthorization(token, userRepository).removeFollowing(companyService.findById(id).get())), id);
+		}else{
+			throw new CompanyInvalidException();
+		}	
 	}
 
 

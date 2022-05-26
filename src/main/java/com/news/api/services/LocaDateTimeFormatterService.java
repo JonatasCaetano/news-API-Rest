@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LocaDateTimeFormatter {
+public class LocaDateTimeFormatterService {
 	
 	public static String formatDate(LocalDateTime localDateTime){
 		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

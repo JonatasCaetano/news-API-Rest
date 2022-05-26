@@ -1,5 +1,6 @@
 package com.news.api.controllers;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.PasswordException;
+import com.news.api.models.exceptions.UnauthorizedException;
+import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.services.UserService;
 
 @RestController
@@ -33,9 +37,9 @@ public class UserController {
 	@PostMapping(path = "/create")
 	public ResponseEntity<String> createAccount(@RequestBody User user) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.createAccount(user));
+			return ResponseEntity.status(HttpStatus.CREATED).body(userService.createAccount(user));
 		}catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} 
 	}
 	
@@ -43,10 +47,12 @@ public class UserController {
 	public ResponseEntity<String> login(@RequestParam(name = "email" ) String email, @RequestParam(name = "password") String password) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.login(email, password));
-		}catch(PasswordException e){
+		} catch(PasswordException e){
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-		}catch (EmailException e) {
+		} catch (EmailException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
 	
@@ -54,17 +60,26 @@ public class UserController {
 	public ResponseEntity<User> login(@RequestHeader(name = "token") String token) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.isAuthorization(token));
-		}catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	
 	}
 
 	@GetMapping(path = "/profile")
 	public ResponseEntity<UserDto> getProfile(@RequestHeader(name = "token") String token) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getProfile(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
@@ -72,8 +87,12 @@ public class UserController {
 	public ResponseEntity<List<NewsDto>> getSavedNews(@RequestHeader(name = "token") String token) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getSavedNews(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
@@ -81,8 +100,12 @@ public class UserController {
 	public ResponseEntity<List<NewsDto>> getPosted(@RequestHeader(name = "token") String token)  {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getPosted(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
@@ -90,8 +113,12 @@ public class UserController {
 	public ResponseEntity<List<CompanyDto>> getCurrentJob(@RequestHeader(name = "token") String token){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getCurrentJob(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 	
@@ -99,8 +126,12 @@ public class UserController {
 	public ResponseEntity<List<CompanyDto>> getHasWorked(@RequestHeader(name = "token") String token){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getHasWorked(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
@@ -108,30 +139,48 @@ public class UserController {
 	public ResponseEntity<List<CompanyDto>> getFollowing(@RequestHeader(name = "token") String token){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.getFollowing(token));
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
 	@PutMapping(path = "/following/add/{id}")
-	public ResponseEntity<Void> addFollowing(@RequestHeader(name = "token") String token, @PathVariable String id) throws Exception{
+	public ResponseEntity<Void> addFollowing(@RequestHeader(name = "token") String token, @PathVariable String id){
 		try {
 			userService.addFollowing(token, id);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (CompanyInvalidException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
 	}
 
 	@PutMapping(path = "/following/remove/{id}")
-	public ResponseEntity<Void> removeFollowing(@RequestHeader(name = "token") String token, @PathVariable String id) throws Exception{
+	public ResponseEntity<Void> removeFollowing(@RequestHeader(name = "token") String token, @PathVariable String id){
 		try {
 			userService.removeFollowing(token, id);
 			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-		} catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (CompanyInvalidException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
 	}
 
-
+	
 }
