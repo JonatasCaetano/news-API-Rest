@@ -27,7 +27,7 @@ public class User {
 	@DocumentReference(lazy = true, collection = "news")
 	private List<News> posted = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "company")
-	private List<Company> currentJob = new ArrayList<>();
+	private List<Company> currentJobs = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "company")
 	private List<Company> hasWorked = new ArrayList<>();
 	@DocumentReference(lazy = true, collection = "company")
@@ -109,8 +109,22 @@ public class User {
 		return posted;
 	}
 
-	public List<Company> getCurrentJob() {
-		return currentJob;
+	public List<Company> getCurrentJobs() {
+		return currentJobs;
+	}
+
+	public User addCurrentJobs(Company company){
+		if(!currentJobs.contains(company)){
+			currentJobs.add(company);
+		}
+		return this;
+	}
+
+	public User removeCurrentJobs(Company company){
+		if(currentJobs.contains(company)){
+			currentJobs.remove(company);
+		}
+		return this;
 	}
 
 	public List<Company> getHasWorked() {

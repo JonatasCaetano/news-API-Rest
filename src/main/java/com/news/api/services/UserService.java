@@ -72,8 +72,8 @@ public class UserService {
 		return AuthorizationService.isAuthorization(token, userRepository).getPosted().stream().map(News::toNewsDto).toList();
 	}
 
-	public List<CompanyDto> getCurrentJob(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getCurrentJob().stream().map(Company::toCompanyDto).toList();
+	public List<CompanyDto> getCurrentJobs(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getCurrentJobs().stream().map(Company::toCompanyDto).toList();
 	}
 
 	public List<CompanyDto> getHasWorked(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
@@ -100,6 +100,20 @@ public class UserService {
 		}else{
 			throw new CompanyInvalidException();
 		}	
+	}
+
+	public void addCurrentJobs(User user, String companyId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<Company> optional = companyService.findById(companyId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userRepository.save(user.addCurrentJobs(optional.get()));
+	}
+
+	//Internal methods
+
+	public Optional<User> findById(String id){
+		return userRepository.findById(id);
 	}
 
 

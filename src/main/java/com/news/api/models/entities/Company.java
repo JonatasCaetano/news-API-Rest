@@ -101,6 +101,20 @@ public class Company {
 		return currentWriters;
 	}
 
+	public Company addCurrentWriters(User user){
+		if(!currentWriters.contains(user)){
+			currentWriters.add(user);
+		}
+		return this;
+	}
+
+	public Company removeCurrentWriters(User user){
+		if(currentWriters.contains(user)){
+			currentWriters.remove(user);
+		}
+		return this;
+	}
+
 	public List<User> getFormerWriters() {
 		return formerWriters;
 	}

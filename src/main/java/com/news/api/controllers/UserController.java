@@ -112,7 +112,7 @@ public class UserController {
 	@GetMapping(path = "/jobs")
 	public ResponseEntity<List<CompanyDto>> getCurrentJob(@RequestHeader(name = "token") String token){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.getCurrentJob(token));
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getCurrentJobs(token));
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} catch (UnauthorizedException e) {
@@ -182,5 +182,5 @@ public class UserController {
 		
 	}
 
-	
+
 }

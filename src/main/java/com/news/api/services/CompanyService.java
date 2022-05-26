@@ -1,6 +1,7 @@
 package com.news.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -19,6 +20,7 @@ import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.EmailException;
 import com.news.api.models.exceptions.PasswordException;
 import com.news.api.models.exceptions.UnauthorizedException;
+import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.repositories.CompanyRepository;
 
 @Service
@@ -26,6 +28,10 @@ public class CompanyService {
 
 	@Autowired
 	private CompanyRepository companyRepository;
+
+	@Autowired
+	@Lazy
+	private UserService userService;
 
 	public String createAccount(Company company) throws NoSuchAlgorithmException {
 		company.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
@@ -75,6 +81,16 @@ public class CompanyService {
 	public List<UserDto> getFollowers(String token) throws NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
 		return AuthorizationService.isAuthorization(token, companyRepository).getFollowers().stream().map(User::toUserDto).toList();
 	}
+
+	public void addCurrentWriters(String token, String userId) throws UserInvalidException, NoSuchAlgorithmException, UnauthorizedException, CompanyInvalidException{
+		Optional<User> optional = userService.findById(userId);
+		if(!optional.isPresent()){
+			throw new UserInvalidException();
+		}
+		userService.addCurrentJobs(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).addCurrentWriters(optional.get())).getId());
+	}
+
+	//Internal methods
 
 	public void addFollower(User user, String id){
 		companyRepository.save(companyRepository.findById(id).get().addFollower(user));
