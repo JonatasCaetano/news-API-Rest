@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.UserDto;
 
 @Document
@@ -22,21 +23,37 @@ public class User {
 	private LocalDateTime creationDate;
 	private String image;
 	private LocalDateTime lastLogin;
+
 	@DocumentReference(lazy = true, collection = "news")
+	@JsonBackReference
 	private List<News> savedNews = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "news")
+	@JsonBackReference(value = "1")
 	private List<News> posted = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference(value = "2")
 	private List<Company> currentJobs = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference(value = "3")
 	private List<Company> hasWorked = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference(value = "4")
 	private List<Company> following = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference(value = "5")
 	private List<Comment> comments = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "news")
+	@JsonBackReference(value = "6")
 	private List<News> likedNews = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "comment")
+	@JsonBackReference(value = "7")
 	private List<Comment> likedComments = new ArrayList<>();
 			
 	public User() {

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.NewsDto;
 
 @Document
@@ -21,29 +22,37 @@ public class News {
 	private LocalDateTime creationDate;
 	private String image;
 	private Boolean visible;
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "14")
 	private User author;
+
 	@DocumentReference(lazy = true, collection = "company")
+	@JsonBackReference(value = "15")
 	private Company publisher;
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "16")
 	private List<User> likes = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "comment")
 	private List<Comment> comments = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "17")
 	private List<User> usersViews = new ArrayList<>();
 	
 	public News() {
 		super();
 	}
 
-	public News(String id, String title, String body, LocalDateTime creationDate, String image) {
+	public News(String title, String body, String image) {
 		super();
-		this.id = id;
 		this.title = title;
 		this.body = body;
-		this.creationDate = creationDate;
 		this.image = image;
 	}
+	
 
 	public String getId() {
 		return id;
@@ -105,6 +114,10 @@ public class News {
 		return publisher;
 	}
 
+	public void setPublisher(Company publisher) {
+		this.publisher = publisher;
+	}
+
 	public List<User> getLikes() {
 		return likes;
 	}
@@ -116,7 +129,8 @@ public class News {
 	public List<User> getUsersViews() {
 		return usersViews;
 	}
-	
+
+		
 	public NewsDto toNewsDto() {
 		return new NewsDto(this);
 	}

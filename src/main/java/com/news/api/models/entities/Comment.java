@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.CommentDto;
 
 
@@ -19,9 +20,13 @@ public class Comment {
 	private String id;
 	private String body;
 	private LocalDateTime creationDate;
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "12")
 	private User author;
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "13")
 	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {

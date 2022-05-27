@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.CompanyDto;
 
 @Document
@@ -22,13 +23,21 @@ public class Company {
 	private LocalDateTime creationDate;
 	private String image;
 	private LocalDateTime lastLogin;
+
 	@DocumentReference(lazy = true, collection = "news")
+	@JsonBackReference(value = "8")
 	private List<News> posted = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "9")
 	private List<User> currentWriters = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "10")
 	private List<User> formerWriters = new ArrayList<>();
+
 	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "11")
 	private List<User> followers = new ArrayList<>();
 	
 	public Company() {
