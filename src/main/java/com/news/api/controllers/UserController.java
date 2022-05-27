@@ -209,4 +209,17 @@ public class UserController {
 		}
 	}
 
+	@GetMapping(path = "/comments/likes")
+	public ResponseEntity<List<CommentDto>> getLikedComments(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getLikedComments(token));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 }

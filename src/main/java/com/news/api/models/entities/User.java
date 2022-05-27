@@ -195,7 +195,7 @@ public class User {
 		return new UserDto(this);
 	}
 
-	public User putLike(Comment comment){
+	public User putLikeComment(Comment comment){
 		if(likedComments.contains(comment)){
 			likedComments.remove(comment);
 		}else{
