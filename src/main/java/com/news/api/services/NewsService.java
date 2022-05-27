@@ -47,6 +47,7 @@ public class NewsService {
 				news.setPublisher(optional.get());
 				newsRepository.insert(news);
 				userService.addPosted(news.getAuthor(), news);
+				companyService.addPosted(news.getPublisher(), news);
 				return news.toNewsDto();
 			}else{
 				throw new UnauthorizedException();

@@ -136,6 +136,8 @@ public class CompanyService {
 		userService.removeHasWorked(optional.get(), companyRepository.save(AuthorizationService.isAuthorization(token, companyRepository).removeFormerWriters(optional.get())));
 	}
 
-
+	public void addPosted(Company company, News news){
+		companyRepository.save(company.addPosted(news));
+	}
 
 }

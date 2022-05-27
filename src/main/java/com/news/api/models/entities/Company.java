@@ -179,6 +179,13 @@ public class Company {
 	public CompanyDto toCompanyDto() {
 		return new CompanyDto(this);
 	}
+
+	public Company addPosted(News news){
+		if(!posted.contains(news)){
+			posted.add(news);
+		}
+		return this;
+	}
 	
 	@Override
 	public int hashCode() {
