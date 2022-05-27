@@ -196,4 +196,17 @@ public class UserController {
 		}
 	}
 
+	@GetMapping(path = "/news/likes")
+	public ResponseEntity<List<NewsDto>> getLikedNews(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getLikedNews(token));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 }

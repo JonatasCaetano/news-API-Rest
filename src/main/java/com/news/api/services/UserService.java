@@ -108,6 +108,10 @@ public class UserService {
 		return AuthorizationService.isAuthorization(token, userRepository).getComments().stream().map(Comment::toCommentDto).toList();
 	}
 
+	public List<NewsDto> getLikedNews(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getLikedNews().stream().map(News::toNewsDto).toList();
+	}
+
 	//Internal methods
 
 	public Optional<User> findById(String id){
