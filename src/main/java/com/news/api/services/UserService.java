@@ -20,6 +20,7 @@ import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.PasswordException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
+import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.repositories.UserRepository;
@@ -101,6 +102,10 @@ public class UserService {
 		}else{
 			throw new CompanyInvalidException();
 		}	
+	}
+
+	public List<CommentDto> getComments(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return AuthorizationService.isAuthorization(token, userRepository).getComments().stream().map(Comment::toCommentDto).toList();
 	}
 
 	//Internal methods

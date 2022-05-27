@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.news.api.models.entities.User;
+import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
@@ -182,5 +183,17 @@ public class UserController {
 		
 	}
 
+	@GetMapping(path = "/comments")
+	public ResponseEntity<List<CommentDto>> getComments(@RequestHeader(name = "token") String token){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.getComments(token));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
 }
