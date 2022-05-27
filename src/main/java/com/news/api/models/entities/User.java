@@ -195,6 +195,15 @@ public class User {
 		return new UserDto(this);
 	}
 
+	public User putLike(Comment comment){
+		if(likedComments.contains(comment)){
+			likedComments.remove(comment);
+		}else{
+			likedComments.add(comment);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

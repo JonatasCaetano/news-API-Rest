@@ -76,6 +76,15 @@ public class Comment {
 		return new CommentDto(this);
 	}
 
+	public Comment putLike(User user){
+		if(likes.contains(user)){
+			likes.remove(user);
+		}else{
+			likes.add(user);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

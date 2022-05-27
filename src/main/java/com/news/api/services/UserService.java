@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
@@ -124,5 +125,7 @@ public class UserService {
 		userRepository.save(user.removeHasWorked(company));
 	}
 
-
+	public void putLike(User user, Comment comment){
+		userRepository.save(user.putLike(comment));
+	}
 }

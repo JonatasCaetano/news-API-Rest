@@ -82,4 +82,19 @@ public class CommentController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
+
+	@PutMapping(path = "like/{commentId}")
+	public ResponseEntity<CommentDto> putLike(@RequestHeader(name = "token") String token, @PathVariable String commentId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(commentService.putLike(token, commentId));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (CommentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
 }

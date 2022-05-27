@@ -28,6 +28,10 @@ public class CommentService {
 	@Lazy
 	private UserRepository userRepository;
 
+	@Autowired
+	@Lazy
+	private UserService userService;
+
 	public CommentDto getComment(String id){
 		return commentRepository.findById(id).get().toCommentDto();
 	}
@@ -61,6 +65,17 @@ public class CommentService {
 			}else{
 				throw new UnauthorizedException();
 			}
+		}else{
+			throw new CommentException();
+		}
+	}
+
+	public CommentDto putLike(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{
+		User user = AuthorizationService.isAuthorization(token, userRepository);
+		Optional<Comment> optional = commentRepository.findById(commentId);
+		if(optional.isPresent()){
+				userService.putLike(user, optional.get());
+				return commentRepository.save(optional.get().putLike(user)).toCommentDto();
 		}else{
 			throw new CommentException();
 		}
