@@ -33,6 +33,13 @@ public class CommentService {
 		return commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), AuthorizationService.isAuthorization(token, userRepository))).toCommentDto();
 	}
 
-	
+	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		AuthorizationService.isAuthorization(token, userRepository);
+		commentRepository.findById(commentId).ifPresent(
+			(comment)->{
+				commentRepository.delete(comment);
+			}
+		);
+	}
 
 }
