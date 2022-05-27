@@ -45,7 +45,9 @@ public class NewsService {
 		if(optional.isPresent()){
 			if(optional.get().getCurrentWriters().contains(news.getAuthor())){
 				news.setPublisher(optional.get());
-				return newsRepository.insert(news).toNewsDto();
+				newsRepository.insert(news);
+				userService.addPosted(news.getAuthor(), news);
+				return news.toNewsDto();
 			}else{
 				throw new UnauthorizedException();
 			}

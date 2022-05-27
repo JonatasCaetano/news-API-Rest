@@ -142,7 +142,9 @@ public class UserService {
 		userRepository.save(user.putLikeComment(comment));
 	}
 
-
+	public void addPosted(User user, News news){
+		userRepository.save(user.addPosted(news));
+	}
 
 
 }

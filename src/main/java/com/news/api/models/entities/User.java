@@ -221,6 +221,13 @@ public class User {
 		return this;
 	}
 
+	public User addPosted(News news){
+		if(!posted.contains(news)){
+			posted.add(news);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
