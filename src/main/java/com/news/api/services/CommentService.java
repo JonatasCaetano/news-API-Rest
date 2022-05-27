@@ -16,17 +16,12 @@ import com.news.api.models.exceptions.CommentException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.repositories.CommentRepository;
-import com.news.api.repositories.UserRepository;
 
 @Service
 public class CommentService {
 
 	@Autowired
 	private CommentRepository commentRepository;
-
-	@Autowired
-	@Lazy
-	private UserRepository userRepository;
 
 	@Autowired
 	@Lazy
@@ -37,11 +32,11 @@ public class CommentService {
 	}
 
 	public CommentDto createComment(String token, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), AuthorizationService.isAuthorization(token, userRepository))).toCommentDto();
+		return commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token))).toCommentDto();
 	}
 
 	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{
-		User user = AuthorizationService.isAuthorization(token, userRepository);
+		User user = userService.isAuthorization(token);
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
 			if(optional.get().getAuthor().equals(user)){
@@ -55,7 +50,7 @@ public class CommentService {
 	}
 
 	public CommentDto editComment(String token, String commentId, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{
-		User user = AuthorizationService.isAuthorization(token, userRepository);
+		User user = userService.isAuthorization(token);
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
 			if(optional.get().getAuthor().equals(user)){
@@ -71,7 +66,7 @@ public class CommentService {
 	}
 
 	public CommentDto putLike(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{
-		User user = AuthorizationService.isAuthorization(token, userRepository);
+		User user = userService.isAuthorization(token);
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
 				userService.putLike(user, optional.get());
