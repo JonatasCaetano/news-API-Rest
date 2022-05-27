@@ -28,12 +28,13 @@ public class Comment {
 		super();
 	}
 
-	public Comment(String id, String body, LocalDateTime creationDate) {
-		super();
-		this.id = id;
+
+	public Comment(String body, LocalDateTime creationDate, User author) {
 		this.body = body;
 		this.creationDate = creationDate;
+		this.author = author;
 	}
+	
 
 	public String getId() {
 		return id;
