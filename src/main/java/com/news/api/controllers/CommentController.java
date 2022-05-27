@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.dtos.CommentDto;
+import com.news.api.models.exceptions.CommentException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.services.CommentService;
@@ -50,7 +52,7 @@ public class CommentController {
 	}
 
 	@DeleteMapping(path = "/{commentId}")
-	public ResponseEntity<CommentDto> createComment(@RequestHeader(name = "token") String token, @PathVariable String commentId){
+	public ResponseEntity<CommentDto> deleteComment(@RequestHeader(name = "token") String token, @PathVariable String commentId){
 		try {
 			commentService.deleteComment(token, commentId);
 			return ResponseEntity.status(HttpStatus.OK).build();
@@ -60,6 +62,24 @@ public class CommentController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (CommentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+
+	@PutMapping(path = "/{commentId}")
+	public ResponseEntity<CommentDto> editComment(@RequestHeader(name = "token") String token, @PathVariable String commentId, @RequestBody 
+	Comment comment){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(commentService.editComment(token, commentId, comment));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (CommentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
 }
