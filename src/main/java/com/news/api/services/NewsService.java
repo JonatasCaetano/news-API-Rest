@@ -13,6 +13,7 @@ import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
+import com.news.api.models.exceptions.InsufficientCredentialException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.repositories.NewsRepository;
@@ -36,8 +37,7 @@ public class NewsService {
 		return newsRepository.findById(id).get().toNewsDto();
 	}
 
-	public NewsDto createNews(String token, News news, String companyId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CompanyInvalidException{
-		System.out.println("Teste*******");
+	public NewsDto createNews(String token, News news, String companyId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CompanyInvalidException, InsufficientCredentialException{
 		news.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
 		news.setVisible(true);
 		news.setAuthor(userService.isAuthorization(token));
@@ -50,7 +50,7 @@ public class NewsService {
 				companyService.addPosted(news.getPublisher(), news);
 				return news.toNewsDto();
 			}else{
-				throw new UnauthorizedException();
+				throw new InsufficientCredentialException();
 			}
 		}else{
 			throw new CompanyInvalidException();

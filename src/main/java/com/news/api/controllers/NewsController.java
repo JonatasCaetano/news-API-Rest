@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
+import com.news.api.models.exceptions.InsufficientCredentialException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.services.NewsService;
@@ -48,6 +49,8 @@ public class NewsController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (CompanyInvalidException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (InsufficientCredentialException e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
 		
 	}
