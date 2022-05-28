@@ -16,6 +16,7 @@ import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.NewsDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.InsufficientCredentialException;
 import com.news.api.models.exceptions.NewsException;
@@ -94,6 +95,15 @@ public class NewsService {
 		Optional<News> optional = newsRepository.findById(newsId);
 		if(optional.isPresent()){
 			return optional.get().getComments().stream().map(Comment::toCommentDto).toList();
+		}else{
+			throw new NewsException();
+		}
+	}
+
+	public List<UserDto> getLikes(String newsId) throws NewsException{
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+			return optional.get().getLikes().stream().map(User::toUserDto).toList();
 		}else{
 			throw new NewsException();
 		}

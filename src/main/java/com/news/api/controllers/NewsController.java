@@ -18,6 +18,7 @@ import java.util.List;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.NewsDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.InsufficientCredentialException;
 import com.news.api.models.exceptions.NewsException;
@@ -100,6 +101,13 @@ public class NewsController {
 		}
 	}
 
-	
+	@GetMapping(path = "{newsId}/likes")
+	public ResponseEntity<List<UserDto>> getLikes(@PathVariable String newsId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(newsService.getLikes(newsId));
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
 
 }
