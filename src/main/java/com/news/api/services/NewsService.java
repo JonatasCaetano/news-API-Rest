@@ -57,6 +57,22 @@ public class NewsService {
 		}
 	}
 
+	public NewsDto editNews(String token, News news) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CompanyInvalidException, InsufficientCredentialException{
+		Optional<News> optional = newsRepository.findById(news.getId());
+		if(optional.isPresent()){
+			News obj = optional.get();
+			if(obj.getPublisher().getCurrentWriters().contains(userService.isAuthorization(token))){
+				obj.setTitle(news.getTitle());
+				obj.setBody(news.getBody());
+				obj.setImage(news.getImage());
+				return newsRepository.save(obj).toNewsDto();
+			}else{
+				throw new InsufficientCredentialException();
+			}
+		}else{
+			throw new CompanyInvalidException();
+		}
+	}
 
 
 
