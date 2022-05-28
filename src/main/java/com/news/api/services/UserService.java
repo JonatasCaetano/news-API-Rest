@@ -141,6 +141,10 @@ public class UserService {
 	public void putLike(User user, Comment comment){
 		userRepository.save(user.putLikeComment(comment));
 	}
+
+	public void putLike(User user, News news){
+		userRepository.save(user.putLikeNews(news));
+	}
 	
 	public void addPosted(User user, News news){
 		userRepository.save(user.addPosted(news));

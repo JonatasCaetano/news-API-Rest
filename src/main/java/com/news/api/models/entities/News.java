@@ -135,6 +135,15 @@ public class News {
 		return new NewsDto(this);
 	}
 
+	public News putLike(User user){
+		if(likes.contains(user)){
+			likes.remove(user);
+		}else{
+			likes.add(user);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

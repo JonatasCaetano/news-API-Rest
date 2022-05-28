@@ -11,9 +11,11 @@ import java.util.Optional;
 
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
+import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.InsufficientCredentialException;
+import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.repositories.NewsRepository;
@@ -74,7 +76,16 @@ public class NewsService {
 		}
 	}
 
-
+	public NewsDto putLike(String token, String newsId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
+		User user = userService.isAuthorization(token);
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+				userService.putLike(user, optional.get());
+				return newsRepository.save(optional.get().putLike(user)).toNewsDto();
+		}else{
+			throw new NewsException();
+		}
+	}
 
 
 

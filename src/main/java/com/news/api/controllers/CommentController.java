@@ -71,7 +71,7 @@ public class CommentController {
 	public ResponseEntity<CommentDto> editComment(@RequestHeader(name = "token") String token, @PathVariable String commentId, @RequestBody 
 	Comment comment){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(commentService.editComment(token, commentId, comment));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(commentService.editComment(token, commentId, comment));
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} catch (UnauthorizedException e) {
@@ -86,7 +86,7 @@ public class CommentController {
 	@PutMapping(path = "like/{commentId}")
 	public ResponseEntity<CommentDto> putLike(@RequestHeader(name = "token") String token, @PathVariable String commentId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(commentService.putLike(token, commentId));
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body(commentService.putLike(token, commentId));
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} catch (UnauthorizedException e) {

@@ -221,6 +221,16 @@ public class User {
 		return this;
 	}
 
+	public User putLikeNews(News news){
+		if(likedNews.contains(news)){
+			likedNews.remove(news);
+		}else{
+			likedNews.add(news);
+		}
+		return this;
+	}
+
+
 	public User addPosted(News news){
 		if(!posted.contains(news)){
 			posted.add(news);
