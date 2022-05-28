@@ -238,6 +238,13 @@ public class User {
 		return this;
 	}
 
+	public User addComment(Comment comment){
+		if(!comments.contains(comment)){
+			comments.add(comment);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

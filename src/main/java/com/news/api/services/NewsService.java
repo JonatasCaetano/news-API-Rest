@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
+import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.InsufficientCredentialException;
@@ -83,6 +85,15 @@ public class NewsService {
 		if(optional.isPresent()){
 				userService.putLike(user, optional.get());
 				return newsRepository.save(optional.get().putLike(user)).toNewsDto();
+		}else{
+			throw new NewsException();
+		}
+	}
+
+	public List<CommentDto> getComments(String newsId) throws NewsException{
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+			return optional.get().getComments().stream().map(Comment::toCommentDto).toList();
 		}else{
 			throw new NewsException();
 		}

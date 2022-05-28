@@ -44,6 +44,7 @@ public class CommentService {
 		}
 		Comment obj = commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token)));
 		newsService.addComment(optional.get(), obj);
+		userService.addComment(userService.isAuthorization(token), obj);
 		return obj.toCommentDto();
 	}
 

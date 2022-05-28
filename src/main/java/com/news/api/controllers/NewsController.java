@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import com.news.api.models.entities.News;
+import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.InsufficientCredentialException;
@@ -89,5 +91,15 @@ public class NewsController {
 		}
 	}
 
+	@GetMapping(path = "{newsId}/comments")
+	public ResponseEntity<List<CommentDto>> getComments(@PathVariable String newsId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(newsService.getComments(newsId));
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+
+	
 
 }

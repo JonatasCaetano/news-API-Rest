@@ -150,5 +150,10 @@ public class UserService {
 		userRepository.save(user.addPosted(news));
 	}
 
+	public void addComment(User user, Comment comment){
+		userRepository.save(user.addComment(comment));
+	}
 
+
+	
 }
