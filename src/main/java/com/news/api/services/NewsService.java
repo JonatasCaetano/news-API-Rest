@@ -97,5 +97,9 @@ public class NewsService {
 		newsRepository.save(news.addComment(comment));
 	}
 
+	public void removeComment(News news, Comment comment){
+		newsRepository.save(news.removeComment(comment));
+	}
+
 
 }

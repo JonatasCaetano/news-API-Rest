@@ -47,11 +47,16 @@ public class CommentService {
 		return obj.toCommentDto();
 	}
 
-	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{
+	public void deleteComment(String token, String newsId, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException, NewsException{
 		User user = userService.isAuthorization(token);
+		Optional<News> news = newsService.findById(newsId);
+		if(!news.isPresent()){
+			throw new NewsException();
+		}
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
 			if(optional.get().getAuthor().equals(user)){
+				newsService.removeComment(news.get(), optional.get());
 				commentRepository.delete(optional.get());
 			}else{
 				throw new UnauthorizedException();

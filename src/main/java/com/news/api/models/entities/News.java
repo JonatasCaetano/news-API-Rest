@@ -151,6 +151,13 @@ public class News {
 		return this;
 	}
 
+	public News removeComment(Comment comment){
+		if(comments.contains(comment)){
+			comments.remove(comment);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

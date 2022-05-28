@@ -54,10 +54,10 @@ public class CommentController {
 		}
 	}
 
-	@DeleteMapping(path = "/{commentId}")
-	public ResponseEntity<CommentDto> deleteComment(@RequestHeader(name = "token") String token, @PathVariable String commentId){
+	@DeleteMapping(path = "/{commentId}/{newsId}")
+	public ResponseEntity<CommentDto> deleteComment(@RequestHeader(name = "token") String token, @PathVariable String commentId, @PathVariable String newsId){
 		try {
-			commentService.deleteComment(token, commentId);
+			commentService.deleteComment(token, commentId, newsId);
 			return ResponseEntity.status(HttpStatus.OK).build();
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -66,6 +66,8 @@ public class CommentController {
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (CommentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (NewsException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
