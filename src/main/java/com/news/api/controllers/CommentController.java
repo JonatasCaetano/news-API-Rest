@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.exceptions.CommentException;
+import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.services.CommentService;
@@ -38,16 +39,18 @@ public class CommentController {
 		}
 	}
 
-	@PostMapping(path = "/create")
-	public ResponseEntity<CommentDto> createComment(@RequestHeader(name = "token") String token, @RequestBody Comment comment){
+	@PostMapping(path = "/create/{newsId}")
+	public ResponseEntity<CommentDto> createComment(@RequestHeader(name = "token") String token, @PathVariable String newsId, @RequestBody Comment comment){
 		try {
-			return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(token, comment));
+			return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(token, newsId, comment));
 		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		} catch (UnauthorizedException e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
 

@@ -10,9 +10,11 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 import com.news.api.models.entities.Comment;
+import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.exceptions.CommentException;
+import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.UnauthorizedException;
 import com.news.api.models.exceptions.UserInvalidException;
 import com.news.api.repositories.CommentRepository;
@@ -27,12 +29,22 @@ public class CommentService {
 	@Lazy
 	private UserService userService;
 
+	@Autowired
+	@Lazy
+	private NewsService newsService;
+
 	public CommentDto getComment(String id){
 		return commentRepository.findById(id).get().toCommentDto();
 	}
 
-	public CommentDto createComment(String token, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token))).toCommentDto();
+	public CommentDto createComment(String token, String newsId, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
+		Optional<News> optional = newsService.findById(newsId);
+		if(!optional.isPresent()){
+			throw new NewsException();
+		}
+		Comment obj = commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token)));
+		newsService.addComment(optional.get(), obj);
+		return obj.toCommentDto();
 	}
 
 	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException{

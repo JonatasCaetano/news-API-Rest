@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
+import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
@@ -87,6 +88,14 @@ public class NewsService {
 		}
 	}
 
+	//Internal methods
+	public Optional<News> findById(String id){
+		return newsRepository.findById(id);
+	}
+
+	public void addComment(News news, Comment comment){
+		newsRepository.save(news.addComment(comment));
+	}
 
 
 }
