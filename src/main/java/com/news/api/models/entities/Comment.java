@@ -25,8 +25,12 @@ public class Comment {
 	@JsonBackReference(value = "12")
 	private User author;
 
-	@DocumentReference(lazy = true, collection = "user")
+	@DocumentReference(lazy = true, collection = "news")
 	@JsonBackReference(value = "13")
+	private News news;
+
+	@DocumentReference(lazy = true, collection = "user")
+	@JsonBackReference(value = "14")
 	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {
@@ -34,10 +38,11 @@ public class Comment {
 	}
 
 
-	public Comment(String body, LocalDateTime creationDate, User author) {
+	public Comment(String body, LocalDateTime creationDate, User author, News news) {
 		this.body = body;
 		this.creationDate = creationDate;
 		this.author = author;
+		this.news = news;
 	}
 	
 
@@ -88,6 +93,14 @@ public class Comment {
 			likes.add(user);
 		}
 		return this;
+	}
+
+	public News getNews() {
+		return this.news;
+	}
+
+	public void setNews(News news) {
+		this.news = news;
 	}
 
 	@Override

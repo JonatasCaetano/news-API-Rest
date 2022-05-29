@@ -33,7 +33,7 @@ public class NewsController {
 	@Autowired
 	private NewsService newsService;
 
-	@GetMapping(path = "/{id}")
+	@GetMapping(path = "{id}")
 	public ResponseEntity<NewsDto> getNews(@PathVariable String id){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(newsService.getNews(id));
@@ -42,7 +42,7 @@ public class NewsController {
 		}
 	}
 
-	@PostMapping(path = "/create/{companyId}")
+	@PostMapping(path = "create/{companyId}")
 	public ResponseEntity<NewsDto> createNews(@RequestHeader(name = "token") String token, @PathVariable String companyId, @RequestBody News news){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(newsService.createNews(token, news, companyId));

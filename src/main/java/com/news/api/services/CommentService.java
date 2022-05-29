@@ -38,26 +38,23 @@ public class CommentService {
 	}
 
 	public CommentDto createComment(String token, String newsId, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
+		User user = userService.isAuthorization(token);
 		Optional<News> optional = newsService.findById(newsId);
 		if(!optional.isPresent()){
 			throw new NewsException();
 		}
-		Comment obj = commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token)));
+		Comment obj = commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token), optional.get()));
 		newsService.addComment(optional.get(), obj);
-		userService.addComment(userService.isAuthorization(token), obj);
+		userService.addComment(user, obj);
 		return obj.toCommentDto();
 	}
 
-	public void deleteComment(String token, String newsId, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException, NewsException{
-		User user = userService.isAuthorization(token);
-		Optional<News> news = newsService.findById(newsId);
-		if(!news.isPresent()){
-			throw new NewsException();
-		}
+	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException, NewsException{
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
-			if(optional.get().getAuthor().equals(user)){
-				newsService.removeComment(news.get(), optional.get());
+			if(optional.get().getAuthor().equals(userService.isAuthorization(token))){
+				newsService.removeComment(optional.get().getNews(), optional.get());
+				userService.removeComment(userService.isAuthorization(token), optional.get());
 				commentRepository.delete(optional.get());
 			}else{
 				throw new UnauthorizedException();

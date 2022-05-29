@@ -44,7 +44,7 @@ public class User {
 	@JsonBackReference(value = "4")
 	private List<Company> following = new ArrayList<>();
 
-	@DocumentReference(lazy = true, collection = "company")
+	@DocumentReference(lazy = true, collection = "comment")
 	@JsonBackReference(value = "5")
 	private List<Comment> comments = new ArrayList<>();
 
@@ -241,6 +241,13 @@ public class User {
 	public User addComment(Comment comment){
 		if(!comments.contains(comment)){
 			comments.add(comment);
+		}
+		return this;
+	}
+
+	public User removeComment(Comment comment){
+		if(comments.contains(comment)){
+			comments.remove(comment);
 		}
 		return this;
 	}

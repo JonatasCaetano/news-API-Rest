@@ -7,6 +7,12 @@ public class UserDto {
     private String id;
 	private String name;
     private String image;
+	private int quantityLikesNews;
+	private int quantityLikesComments;
+	private int quantityComments;
+	private int quantitySaved;
+
+
 
     public UserDto(){
         super();
@@ -16,6 +22,10 @@ public class UserDto {
         id = user.getId();
         name = user.getName();
         image = user.getImage();
+		quantityLikesNews = user.getLikedNews().size();
+		quantityLikesComments = user.getLikedComments().size();
+		quantityComments = user.getComments().size();
+		quantitySaved = user.getSavedNews().size();
     }
 
 	public String getId() {
@@ -42,6 +52,38 @@ public class UserDto {
 		this.image = image;
 	}
 
+
+	public int getQuantityLikesNews() {
+		return this.quantityLikesNews;
+	}
+
+	public void setQuantityLikesNews(int quantityLikesNews) {
+		this.quantityLikesNews = quantityLikesNews;
+	}
+
+	public int getQuantityLikesComments() {
+		return this.quantityLikesComments;
+	}
+
+	public void setQuantityLikesComments(int quantityLikesComments) {
+		this.quantityLikesComments = quantityLikesComments;
+	}
+
+	public int getQuantityComments() {
+		return this.quantityComments;
+	}
+
+	public void setQuantityComments(int quantityComments) {
+		this.quantityComments = quantityComments;
+	}
+
+	public int getQuantitySaved() {
+		return this.quantitySaved;
+	}
+
+	public void setQuantitySaved(int quantitySaved) {
+		this.quantitySaved = quantitySaved;
+	}
 	
     
     

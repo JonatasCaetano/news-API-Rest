@@ -179,6 +179,10 @@ public class UserService {
 		userRepository.save(user.addComment(comment));
 	}
 
+	public void removeComment(User user, Comment comment){
+		userRepository.save(user.removeComment(comment));
+	}
+
 
 	
 }
