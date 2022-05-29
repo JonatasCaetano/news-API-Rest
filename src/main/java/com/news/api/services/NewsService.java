@@ -134,8 +134,17 @@ public class NewsService {
 		}
 	}
 	
+	public List<UserDto> getUsersView(String newsId) throws NewsException, NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+			return optional.get().getUsersViews().stream().map(User::toUserDto).toList();
+		}else{
+			throw new NewsException();
+		}
+	}
+
 	//Internal methods
-	
+
 	public Optional<News> findById(String id){
 		return newsRepository.findById(id);
 	}

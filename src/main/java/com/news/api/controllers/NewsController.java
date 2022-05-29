@@ -142,4 +142,19 @@ public class NewsController {
 		}
 	}
 
+	@GetMapping(path = "{newsId}/views")
+	public ResponseEntity<List<UserDto>> getUsersView(@PathVariable String newsId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(newsService.getUsersView(newsId));
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 }
