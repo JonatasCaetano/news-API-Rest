@@ -12,7 +12,8 @@ public class CommentDto {
 	private LocalDateTime creationDate;
 	private UserDto author;
 	private int quantityLikes;
-	
+	private Boolean liked = false;
+
 	public CommentDto() {
 		super();
 	}
@@ -24,6 +25,16 @@ public class CommentDto {
 		creationDate = comment.getCreationDate();
 		setAuthor(comment.getAuthor());
 		quantityLikes = comment.getLikes().size();
+	}
+
+	public CommentDto(Comment comment, User user) {
+		super();
+		id = comment.getId();
+		body = comment.getBody();
+		creationDate = comment.getCreationDate();
+		setAuthor(comment.getAuthor());
+		quantityLikes = comment.getLikes().size();
+		setLiked(comment, user);
 	}
 
 	public String getId() {
@@ -64,6 +75,18 @@ public class CommentDto {
 
 	public void setQuantityLikes(int quantityLikes) {
 		this.quantityLikes = quantityLikes;
+	}
+
+	public Boolean getLiked() {
+		return this.liked;
+	}
+	
+	public void setLiked(Comment comment, User user){
+		if(comment.getLikes().contains(user)){
+			liked = true;
+		}else{
+			liked = false;
+		}
 	}
 	
 	

@@ -39,8 +39,8 @@ public class NewsService {
 	private CompanyService companyService;
 
 
-	public NewsDto getNews(String id){
-		return newsRepository.findById(id).get().toNewsDto();
+	public NewsDto getNews(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return newsRepository.findById(id).get().toNewsDto(userService.isAuthorization(token));
 	}
 
 	public NewsDto createNews(String token, News news, String companyId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CompanyInvalidException, InsufficientCredentialException{
@@ -54,7 +54,7 @@ public class NewsService {
 				newsRepository.insert(news);
 				userService.addPosted(news.getAuthor(), news);
 				companyService.addPosted(news.getPublisher(), news);
-				return news.toNewsDto();
+				return news.toNewsDto(userService.isAuthorization(token));
 			}else{
 				throw new InsufficientCredentialException();
 			}
@@ -71,7 +71,7 @@ public class NewsService {
 				obj.setTitle(news.getTitle());
 				obj.setBody(news.getBody());
 				obj.setImage(news.getImage());
-				return newsRepository.save(obj).toNewsDto();
+				return newsRepository.save(obj).toNewsDto(userService.isAuthorization(token));
 			}else{
 				throw new InsufficientCredentialException();
 			}
@@ -85,16 +85,17 @@ public class NewsService {
 		Optional<News> optional = newsRepository.findById(newsId);
 		if(optional.isPresent()){
 				userService.putLike(user, optional.get());
-				return newsRepository.save(optional.get().putLike(user)).toNewsDto();
+				return newsRepository.save(optional.get().putLike(user)).toNewsDto(userService.isAuthorization(token));
 		}else{
 			throw new NewsException();
 		}
 	}
 
-	public List<CommentDto> getComments(String newsId) throws NewsException{
+	public List<CommentDto> getComments(String token, String newsId) throws NewsException, NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
 		Optional<News> optional = newsRepository.findById(newsId);
+		User user = userService.isAuthorization(token);
 		if(optional.isPresent()){
-			return optional.get().getComments().stream().map(Comment::toCommentDto).toList();
+			return optional.get().getComments().stream().map(comment -> comment.toCommentDto(user)).toList();
 		}else{
 			throw new NewsException();
 		}
@@ -114,7 +115,7 @@ public class NewsService {
 		if(optional.isPresent()){
 			News news = optional.get();
 			if(news.getPublisher().getCurrentWriters().contains(userService.isAuthorization(token))){
-				return newsRepository.save(news.putVisibility()).toNewsDto();
+				return newsRepository.save(news.putVisibility()).toNewsDto(userService.isAuthorization(token));
 			}else{
 				throw new InsufficientCredentialException();
 			}
@@ -128,7 +129,7 @@ public class NewsService {
 		Optional<News> optional = newsRepository.findById(newsId);
 		if(optional.isPresent()){
 			News news = optional.get();
-			return newsRepository.save(news.addUserView(userService.isAuthorization(token))).toNewsDto();
+			return newsRepository.save(news.addUserView(userService.isAuthorization(token))).toNewsDto(userService.isAuthorization(token));
 		}else{
 			throw new NewsException();
 		}
@@ -157,6 +158,6 @@ public class NewsService {
 		newsRepository.save(news.removeComment(comment));
 	}
 
-	
+
 
 }

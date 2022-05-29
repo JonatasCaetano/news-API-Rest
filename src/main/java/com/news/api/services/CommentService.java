@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.Optional;
 
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.CommentDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.CommentException;
 import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.UnauthorizedException;
@@ -33,8 +35,8 @@ public class CommentService {
 	@Lazy
 	private NewsService newsService;
 
-	public CommentDto getComment(String id){
-		return commentRepository.findById(id).get().toCommentDto();
+	public CommentDto getComment(String token, String id) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		return commentRepository.findById(id).get().toCommentDto(userService.isAuthorization(token));
 	}
 
 	public CommentDto createComment(String token, String newsId, Comment comment) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
@@ -46,7 +48,7 @@ public class CommentService {
 		Comment obj = commentRepository.insert(new Comment(comment.getBody(), LocalDateTime.now(ZoneOffset.UTC), userService.isAuthorization(token), optional.get()));
 		newsService.addComment(optional.get(), obj);
 		userService.addComment(user, obj);
-		return obj.toCommentDto();
+		return obj.toCommentDto(user);
 	}
 
 	public void deleteComment(String token, String commentId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CommentException, NewsException{
@@ -71,7 +73,7 @@ public class CommentService {
 			if(optional.get().getAuthor().equals(user)){
 				Comment obj = optional.get();
 				obj.setBody(comment.getBody());
-				return commentRepository.save(obj).toCommentDto();
+				return commentRepository.save(obj).toCommentDto(user);
 			}else{
 				throw new UnauthorizedException();
 			}
@@ -85,10 +87,18 @@ public class CommentService {
 		Optional<Comment> optional = commentRepository.findById(commentId);
 		if(optional.isPresent()){
 				userService.putLike(user, optional.get());
-				return commentRepository.save(optional.get().putLike(user)).toCommentDto();
+				return commentRepository.save(optional.get().putLike(user)).toCommentDto(user);
 		}else{
 			throw new CommentException();
 		}
 	}
 
+	public List<UserDto> getLikes(String commentId) throws NewsException{
+		Optional<Comment> optional = commentRepository.findById(commentId);
+		if(optional.isPresent()){
+			return optional.get().getLikes().stream().map(User::toUserDto).toList();
+		}else{
+			throw new NewsException();
+		}
+	}
 }

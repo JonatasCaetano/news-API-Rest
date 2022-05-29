@@ -34,9 +34,9 @@ public class NewsController {
 	private NewsService newsService;
 
 	@GetMapping(path = "{id}")
-	public ResponseEntity<NewsDto> getNews(@PathVariable String id){
+	public ResponseEntity<NewsDto> getNews(@RequestHeader(name = "token") String token, @PathVariable String id){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(newsService.getNews(id));
+			return ResponseEntity.status(HttpStatus.OK).body(newsService.getNews(token, id));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -93,9 +93,17 @@ public class NewsController {
 	}
 
 	@GetMapping(path = "{newsId}/comments")
-	public ResponseEntity<List<CommentDto>> getComments(@PathVariable String newsId){
+	public ResponseEntity<List<CommentDto>> getComments(@RequestHeader(name = "token") String token, @PathVariable String newsId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(newsService.getComments(newsId));
+			try {
+				return ResponseEntity.status(HttpStatus.OK).body(newsService.getComments(token, newsId));
+			} catch (NoSuchAlgorithmException e) {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			} catch (UnauthorizedException e) {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			} catch (UserInvalidException e) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
 		} catch (NewsException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}

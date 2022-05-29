@@ -19,7 +19,7 @@ public class NewsDto {
 	private int quantityLikes;
 	private int quantityComments;
 	private int quantityViews;
-	
+	private Boolean liked = false;
 	
 	public NewsDto() {
 		super();
@@ -38,6 +38,22 @@ public class NewsDto {
 		quantityLikes = news.getLikes().size();
 		quantityComments = news.getComments().size();
 		quantityViews = news.getUsersViews().size();
+	}
+
+	public NewsDto(News news, User user) {
+		super();
+		id = news.getId();
+		title = news.getTitle();
+		body = news.getBody();
+		creationDate = news.getCreationDate();
+		image = news.getImage();
+		visible = news.getVisible();
+		setAuthor(news.getAuthor());
+		setPublisher(news.getPublisher());
+		quantityLikes = news.getLikes().size();
+		quantityComments = news.getComments().size();
+		quantityViews = news.getUsersViews().size();
+		setLiked(news, user);
 	}
 
 	public String getId() {
@@ -127,7 +143,17 @@ public class NewsDto {
 	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
+
+	public Boolean getLiked() {
+		return this.liked;
+	}
 	
-	
+	public void setLiked(News news, User user){
+		if(news.getLikes().contains(user)){
+			liked = true;
+		}else{
+			liked = false;
+		}
+	}
 	
 }

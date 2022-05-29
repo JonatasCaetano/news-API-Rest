@@ -135,6 +135,10 @@ public class News {
 		return new NewsDto(this);
 	}
 
+	public NewsDto toNewsDto(User user) {
+		return new NewsDto(this, user);
+	}
+
 	public News putLike(User user){
 		if(likes.contains(user)){
 			likes.remove(user);

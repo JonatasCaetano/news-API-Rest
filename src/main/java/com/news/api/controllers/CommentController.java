@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.dtos.CommentDto;
+import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.CommentException;
 import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.UnauthorizedException;
@@ -31,9 +33,9 @@ public class CommentController {
 	private CommentService commentService;
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<CommentDto> getComment(@PathVariable String id){
+	public ResponseEntity<CommentDto> getComment(@RequestHeader(name = "token") String token, @PathVariable String id){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(commentService.getComment(id));
+			return ResponseEntity.status(HttpStatus.OK).body(commentService.getComment(token, id));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -102,4 +104,14 @@ public class CommentController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 		}
 	}
+
+	@GetMapping(path = "{commentId}/likes")
+	public ResponseEntity<List<UserDto>> getLikes(@PathVariable String commentId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(commentService.getLikes(commentId));
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+	}
+
 }

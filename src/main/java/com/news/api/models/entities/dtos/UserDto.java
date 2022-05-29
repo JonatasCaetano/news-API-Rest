@@ -11,8 +11,8 @@ public class UserDto {
 	private int quantityLikesComments;
 	private int quantityComments;
 	private int quantitySaved;
-
-
+	private int quantityPosted;
+	private int quantityFollowing;
 
     public UserDto(){
         super();
@@ -26,6 +26,8 @@ public class UserDto {
 		quantityLikesComments = user.getLikedComments().size();
 		quantityComments = user.getComments().size();
 		quantitySaved = user.getSavedNews().size();
+		quantityPosted = user.getPosted().size();
+		quantityFollowing = user.getFollowing().size();
     }
 
 	public String getId() {
@@ -85,6 +87,22 @@ public class UserDto {
 		this.quantitySaved = quantitySaved;
 	}
 	
+
+	public int getQuantityPosted() {
+		return this.quantityPosted;
+	}
+
+	public void setQuantityPosted(int quantityPosted) {
+		this.quantityPosted = quantityPosted;
+	}
+
+	public int getQuantityFollowing() {
+		return this.quantityFollowing;
+	}
+
+	public void setQuantityFollowing(int quantityFollowing) {
+		this.quantityFollowing = quantityFollowing;
+	}
     
     
 

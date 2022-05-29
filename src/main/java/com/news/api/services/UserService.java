@@ -72,11 +72,13 @@ public class UserService {
 	}
 
 	public List<NewsDto> getSavedNews(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getSavedNews().stream().map(News::toNewsDto).toList();
+		User user = isAuthorization(token);
+		return AuthorizationService.isAuthorization(token, userRepository).getSavedNews().stream().map(news-> news.toNewsDto(user)).toList();
 	}
 
 	public List<NewsDto> getPosted(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getPosted().stream().map(News::toNewsDto).toList();
+		User user = isAuthorization(token);
+		return AuthorizationService.isAuthorization(token, userRepository).getPosted().stream().map(news-> news.toNewsDto(user)).toList();
 	}
 
 	public List<CompanyDto> getCurrentJobs(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
@@ -110,15 +112,18 @@ public class UserService {
 	}
 
 	public List<CommentDto> getComments(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getComments().stream().map(Comment::toCommentDto).toList();
+		User user = isAuthorization(token);
+		return AuthorizationService.isAuthorization(token, userRepository).getComments().stream().map(comment-> comment.toCommentDto(user)).toList();
 	}
 
 	public List<NewsDto> getLikedNews(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getLikedNews().stream().map(News::toNewsDto).toList();
+		User user = isAuthorization(token);
+		return AuthorizationService.isAuthorization(token, userRepository).getLikedNews().stream().map(news-> news.toNewsDto(user)).toList();
 	}
 
 	public List<CommentDto> getLikedComments(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
-		return AuthorizationService.isAuthorization(token, userRepository).getLikedComments().stream().map(Comment::toCommentDto).toList();
+		User user = isAuthorization(token);
+		return AuthorizationService.isAuthorization(token, userRepository).getLikedComments().stream().map(comment-> comment.toCommentDto(user)).toList();
 	}
 
 	public void addSavedNews(String token, String newsId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{

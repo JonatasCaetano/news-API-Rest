@@ -86,6 +86,10 @@ public class Comment {
 		return new CommentDto(this);
 	}
 
+	public CommentDto toCommentDto(User user) {
+		return new CommentDto(this, user);
+	}
+
 	public Comment putLike(User user){
 		if(likes.contains(user)){
 			likes.remove(user);
