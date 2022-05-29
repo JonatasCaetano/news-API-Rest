@@ -16,6 +16,7 @@ import com.news.api.models.entities.News;
 import com.news.api.models.entities.User;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.PasswordException;
 import com.news.api.models.exceptions.UnauthorizedException;
@@ -34,6 +35,10 @@ public class UserService {
 	@Autowired
 	@Lazy
 	private CompanyService companyService;
+
+	@Autowired
+	@Lazy
+	private NewsService newsService;
 	
 	public String createAccount(User user) throws NoSuchAlgorithmException {
 		user.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
@@ -114,6 +119,16 @@ public class UserService {
 
 	public List<CommentDto> getLikedComments(String token) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
 		return AuthorizationService.isAuthorization(token, userRepository).getLikedComments().stream().map(Comment::toCommentDto).toList();
+	}
+
+	public void addSavedNews(String token, String newsId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
+		User user = isAuthorization(token);
+		Optional<News> optional = newsService.findById(newsId);
+		if(optional.isPresent()){
+			userRepository.save(user.addSavedNews(optional.get()));
+		}else{
+			throw new NewsException();
+		}
 	}
 
 	//Internal methods

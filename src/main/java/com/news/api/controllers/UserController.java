@@ -22,6 +22,7 @@ import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
 import com.news.api.models.entities.dtos.UserDto;
 import com.news.api.models.exceptions.EmailException;
+import com.news.api.models.exceptions.NewsException;
 import com.news.api.models.exceptions.CompanyInvalidException;
 import com.news.api.models.exceptions.PasswordException;
 import com.news.api.models.exceptions.UnauthorizedException;
@@ -220,6 +221,23 @@ public class UserController {
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+	}
+
+	@PutMapping(path = "/save/{newsId}")
+	public ResponseEntity<Void> addSavedNews(@RequestHeader(name = "token") String token, @PathVariable String newsId){
+		try {
+			userService.addSavedNews(token, newsId);
+			return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
 	}
 
 }

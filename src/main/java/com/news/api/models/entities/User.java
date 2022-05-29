@@ -245,6 +245,14 @@ public class User {
 		return this;
 	}
 
+	public User addSavedNews(News news){
+		if(!savedNews.contains(news)){
+			savedNews.add(news);
+		}
+		return this;
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
