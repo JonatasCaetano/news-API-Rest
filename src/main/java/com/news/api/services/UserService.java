@@ -131,6 +131,16 @@ public class UserService {
 		}
 	}
 
+	public void removeSavedNews(String token, String newsId) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, NewsException{
+		User user = isAuthorization(token);
+		Optional<News> optional = newsService.findById(newsId);
+		if(optional.isPresent()){
+			userRepository.save(user.removeSavedNews(optional.get()));
+		}else{
+			throw new NewsException();
+		}
+	}
+
 	//Internal methods
 
 	public Optional<User> findById(String id){

@@ -252,6 +252,13 @@ public class User {
 		return this;
 	}
 
+	public User removeSavedNews(News news){
+		if(savedNews.contains(news)){
+			savedNews.remove(news);
+		}
+		return this;
+	}
+
 
 	@Override
 	public int hashCode() {
