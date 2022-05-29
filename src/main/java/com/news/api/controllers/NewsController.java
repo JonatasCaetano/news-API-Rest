@@ -127,4 +127,19 @@ public class NewsController {
 		}
 	}
 
+	@PutMapping(path = "{newsId}/view")
+	public ResponseEntity<NewsDto> addUserView(@RequestHeader(name = "token") String token, @PathVariable String newsId){
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(newsService.addUserView(token, newsId));
+		} catch (NewsException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		} catch (NoSuchAlgorithmException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (UnauthorizedException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		} catch (UserInvalidException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 }

@@ -163,6 +163,13 @@ public class News {
 		return this;
 	}
 
+	public News addUserView(User user){
+		if(!usersViews.contains(user)){
+			usersViews.add(user);
+		}
+		return this;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

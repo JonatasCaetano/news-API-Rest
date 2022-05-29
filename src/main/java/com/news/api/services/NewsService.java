@@ -124,7 +124,18 @@ public class NewsService {
 		}
 	}
 
+	public NewsDto addUserView(String token, String newsId) throws NewsException, NoSuchAlgorithmException, UnauthorizedException, UserInvalidException{
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+			News news = optional.get();
+			return newsRepository.save(news.addUserView(userService.isAuthorization(token))).toNewsDto();
+		}else{
+			throw new NewsException();
+		}
+	}
+	
 	//Internal methods
+	
 	public Optional<News> findById(String id){
 		return newsRepository.findById(id);
 	}
