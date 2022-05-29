@@ -21,7 +21,7 @@ public class News {
 	private String body;
 	private LocalDateTime creationDate;
 	private String image;
-	private Boolean visible;
+	private Boolean visible = true;
 
 	@DocumentReference(lazy = true, collection = "user")
 	@JsonBackReference(value = "14")
@@ -155,6 +155,11 @@ public class News {
 		if(comments.contains(comment)){
 			comments.remove(comment);
 		}
+		return this;
+	}
+
+	public News putVisibility(){
+		visible = !visible;
 		return this;
 	}
 

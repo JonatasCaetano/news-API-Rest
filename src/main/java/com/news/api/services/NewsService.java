@@ -109,6 +109,21 @@ public class NewsService {
 		}
 	}
 
+	public NewsDto changeVisibility(String token, String newsId) throws NewsException, NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, InsufficientCredentialException{
+		Optional<News> optional = newsRepository.findById(newsId);
+		if(optional.isPresent()){
+			News news = optional.get();
+			if(news.getPublisher().getCurrentWriters().contains(userService.isAuthorization(token))){
+				return newsRepository.save(news.putVisibility()).toNewsDto();
+			}else{
+				throw new InsufficientCredentialException();
+			}
+			
+		}else{
+			throw new NewsException();
+		}
+	}
+
 	//Internal methods
 	public Optional<News> findById(String id){
 		return newsRepository.findById(id);
@@ -122,5 +137,6 @@ public class NewsService {
 		newsRepository.save(news.removeComment(comment));
 	}
 
+	
 
 }

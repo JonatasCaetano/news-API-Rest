@@ -13,11 +13,13 @@ public class NewsDto {
 	private String body;
 	private LocalDateTime creationDate;
 	private String image;
+	private Boolean visible;
 	private UserDto author;
 	private CompanyDto publisher;
 	private int quantityLikes;
 	private int quantityComments;
 	private int quantityViews;
+	
 	
 	public NewsDto() {
 		super();
@@ -30,6 +32,7 @@ public class NewsDto {
 		body = news.getBody();
 		creationDate = news.getCreationDate();
 		image = news.getImage();
+		visible = news.getVisible();
 		setAuthor(news.getAuthor());
 		setPublisher(news.getPublisher());
 		quantityLikes = news.getLikes().size();
@@ -117,6 +120,13 @@ public class NewsDto {
 		this.quantityViews = quantityViews;
 	}
 	
+	public Boolean isVisible() {
+		return this.visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
 	
 	
 	
