@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.UserDto;
@@ -42,7 +44,7 @@ public class CommentController {
 	}
 
 	@PostMapping(path = "/create/{newsId}")
-	public ResponseEntity<CommentDto> createComment(@RequestHeader(name = "token") String token, @PathVariable String newsId, @RequestBody Comment comment){
+	public ResponseEntity<CommentDto> createComment(@RequestHeader(name = "token") String token, @PathVariable String newsId, @RequestBody @Valid Comment comment){
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(commentService.createComment(token, newsId, comment));
 		} catch (NoSuchAlgorithmException e) {
@@ -75,7 +77,7 @@ public class CommentController {
 	}
 
 	@PutMapping(path = "/{commentId}")
-	public ResponseEntity<CommentDto> editComment(@RequestHeader(name = "token") String token, @PathVariable String commentId, @RequestBody 
+	public ResponseEntity<CommentDto> editComment(@RequestHeader(name = "token") String token, @PathVariable String commentId, @RequestBody @Valid
 	Comment comment){
 		try {
 			return ResponseEntity.status(HttpStatus.ACCEPTED).body(commentService.editComment(token, commentId, comment));

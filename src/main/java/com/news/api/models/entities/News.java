@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -17,29 +20,35 @@ public class News {
 
 	@Id
 	private String id;
+	@NotBlank
+	@Size(min = 12, max = 140)
 	private String title;
+	@NotBlank
+	@Size(min = 280, max = 5000)
 	private String body;
-	private LocalDateTime creationDate;
+	@NotBlank
 	private String image;
+
+	private LocalDateTime creationDate;
 	private Boolean visible = true;
 
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference(value = "14")
+	@JsonBackReference(value = "12")
 	private User author;
 
 	@DocumentReference(lazy = true, collection = "company")
-	@JsonBackReference(value = "15")
+	@JsonBackReference(value = "13")
 	private Company publisher;
 
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference(value = "16")
+	@JsonBackReference(value = "14")
 	private List<User> likes = new ArrayList<>();
 
 	@DocumentReference(lazy = true, collection = "comment")
 	private List<Comment> comments = new ArrayList<>();
 
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference(value = "17")
+	@JsonBackReference(value = "15")
 	private List<User> usersViews = new ArrayList<>();
 	
 	public News() {

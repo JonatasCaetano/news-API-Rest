@@ -3,6 +3,8 @@ package com.news.api.controllers;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,12 +39,12 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping(path = "/create")
-	public ResponseEntity<String> createAccount(@RequestBody User user) {
+	public ResponseEntity<String> createAccount(@RequestBody @Valid User user) {
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(userService.createAccount(user));
-		}catch (Exception e) {
+		} catch (NoSuchAlgorithmException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-		} 
+		}	
 	}
 	
 	@GetMapping(path = "/login")

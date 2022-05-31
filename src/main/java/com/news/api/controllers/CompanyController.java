@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.dtos.CompanyDto;
 import com.news.api.models.entities.dtos.NewsDto;
@@ -35,7 +37,7 @@ public class CompanyController {
 	private CompanyService companyService;
 
 	@PostMapping(path = "/create")
-	public ResponseEntity<String> createAccount(@RequestBody Company company) {
+	public ResponseEntity<String> createAccount(@RequestBody @Valid Company company) {
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(companyService.createAccount(company));
 		} catch (NoSuchAlgorithmException e) {

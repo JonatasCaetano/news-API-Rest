@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -18,19 +21,21 @@ public class Comment {
 
 	@Id
 	private String id;
+	@NotBlank
+	@Size(max = 280)
 	private String body;
 	private LocalDateTime creationDate;
 
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference(value = "12")
+	@JsonBackReference(value = "16")
 	private User author;
 
 	@DocumentReference(lazy = true, collection = "news")
-	@JsonBackReference(value = "13")
+	@JsonBackReference(value = "17")
 	private News news;
 
 	@DocumentReference(lazy = true, collection = "user")
-	@JsonBackReference(value = "14")
+	@JsonBackReference(value = "18")
 	private List<User> likes = new ArrayList<>();
 	
 	public Comment() {

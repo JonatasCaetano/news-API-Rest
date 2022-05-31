@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.news.api.models.entities.News;
 import com.news.api.models.entities.dtos.CommentDto;
 import com.news.api.models.entities.dtos.NewsDto;
@@ -43,7 +45,7 @@ public class NewsController {
 	}
 
 	@PostMapping(path = "create/{companyId}")
-	public ResponseEntity<NewsDto> createNews(@RequestHeader(name = "token") String token, @PathVariable String companyId, @RequestBody News news){
+	public ResponseEntity<NewsDto> createNews(@RequestHeader(name = "token") String token, @PathVariable String companyId, @RequestBody @Valid News news){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(newsService.createNews(token, news, companyId));
 		} catch (NoSuchAlgorithmException e) {
@@ -61,7 +63,7 @@ public class NewsController {
 	}
 
 	@PutMapping
-	public ResponseEntity<NewsDto> editNews(@RequestHeader(name = "token") String token, @RequestBody News news){
+	public ResponseEntity<NewsDto> editNews(@RequestHeader(name = "token") String token, @RequestBody @Valid News news){
 			try {
 				return ResponseEntity.status(HttpStatus.OK).body(newsService.editNews(token, news));
 			} catch (NoSuchAlgorithmException e) {

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
@@ -13,15 +17,21 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.UserDto;
 
 @Document
-public class User {
+public class User{
 
 	@Id
 	private String id;
+	@NotBlank
+	@Size(min = 8)
 	private String name;
+	@Email
 	private String email;
+	@NotBlank
+	@Size(min = 6)
 	private String password;
-	private LocalDateTime creationDate;
+	
 	private String image;
+	private LocalDateTime creationDate;
 	private LocalDateTime lastLogin;
 
 	@DocumentReference(lazy = true, collection = "news")

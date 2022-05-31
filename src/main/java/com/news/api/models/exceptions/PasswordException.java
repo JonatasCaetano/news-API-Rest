@@ -2,7 +2,9 @@ package com.news.api.models.exceptions;
 
 public class PasswordException extends Exception {
     
-    public PasswordException(){
+    private static final long serialVersionUID = 1L;
+
+	public PasswordException(){
         super();
     }
 }

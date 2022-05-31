@@ -2,7 +2,9 @@ package com.news.api.models.exceptions;
 
 public class InsufficientCredentialException extends Exception {
     
-    public InsufficientCredentialException() {
+    private static final long serialVersionUID = 1L;
+
+	public InsufficientCredentialException() {
         super();
     }
 
