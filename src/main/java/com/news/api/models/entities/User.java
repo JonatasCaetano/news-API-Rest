@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
@@ -21,12 +22,13 @@ public class User{
 
 	@Id
 	private String id;
-	
+
 	@NotBlank(message = "Nome não informado")
 	@Size(min = 8, message = "informe o nome completo")
 	private String name;
 	@Email(message = "email invalido")
 	@NotBlank(message = "Email não informado")
+	@Indexed(unique = true, background = true)
 	private String email;
 	@NotBlank(message = "Senha não informada")
 	@Size(min = 6, message = "A senha dever ter no minimo seis caracteres")

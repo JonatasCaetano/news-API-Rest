@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.DuplicateKeyException;
 import com.news.api.models.entities.Comment;
 import com.news.api.models.entities.Company;
 import com.news.api.models.entities.News;
@@ -40,7 +41,7 @@ public class UserService {
 	@Lazy
 	private NewsService newsService;
 	
-	public String createAccount(User user) throws NoSuchAlgorithmException {
+	public String createAccount(User user) throws NoSuchAlgorithmException, DuplicateKeyException {
 		user.setCreationDate(LocalDateTime.now(ZoneOffset.UTC));
 		user.setLastLogin(LocalDateTime.now(ZoneOffset.UTC));
 		user = userRepository.insert(user);
