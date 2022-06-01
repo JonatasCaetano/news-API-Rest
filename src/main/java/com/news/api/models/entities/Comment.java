@@ -15,15 +15,16 @@ import org.springframework.data.mongodb.core.mapping.DocumentReference;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.news.api.models.entities.dtos.CommentDto;
 
-
 @Document
 public class Comment {
 
 	@Id
 	private String id;
-	@NotBlank
-	@Size(max = 280)
+	
+	@NotBlank(message = "Texto do comentario não informado")
+	@Size(max = 280, message = "O comentario deve ter no maximo 280 caracteres")
 	private String body;
+
 	private LocalDateTime creationDate;
 
 	@DocumentReference(lazy = true, collection = "user")

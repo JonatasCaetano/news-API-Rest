@@ -54,7 +54,7 @@ public class CommentController {
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (NewsException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
 	}
 
@@ -88,7 +88,7 @@ public class CommentController {
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (CommentException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		}
 	}
 

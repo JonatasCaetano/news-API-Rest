@@ -63,7 +63,7 @@ public class NewsService {
 		}
 	}
 
-	public NewsDto editNews(String token, News news) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, CompanyInvalidException, InsufficientCredentialException{
+	public NewsDto editNews(String token, News news) throws NoSuchAlgorithmException, UnauthorizedException, UserInvalidException, InsufficientCredentialException, NewsException{
 		Optional<News> optional = newsRepository.findById(news.getId());
 		if(optional.isPresent()){
 			News obj = optional.get();
@@ -76,7 +76,7 @@ public class NewsService {
 				throw new InsufficientCredentialException();
 			}
 		}else{
-			throw new CompanyInvalidException();
+			throw new NewsException();
 		}
 	}
 

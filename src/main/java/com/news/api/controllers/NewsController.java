@@ -55,7 +55,7 @@ public class NewsController {
 		} catch (UserInvalidException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} catch (CompanyInvalidException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 		} catch (InsufficientCredentialException e) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 		}
@@ -72,8 +72,8 @@ public class NewsController {
 				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 			} catch (UserInvalidException e) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			} catch (CompanyInvalidException e) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			} catch (NewsException e) {
+				return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
 			} catch (InsufficientCredentialException e) {
 				return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
 			}	

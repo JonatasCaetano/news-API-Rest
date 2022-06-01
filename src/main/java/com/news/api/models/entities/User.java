@@ -21,13 +21,15 @@ public class User{
 
 	@Id
 	private String id;
-	@NotBlank
-	@Size(min = 8)
+	
+	@NotBlank(message = "Nome não informado")
+	@Size(min = 8, message = "informe o nome completo")
 	private String name;
-	@Email
+	@Email(message = "email invalido")
+	@NotBlank(message = "Email não informado")
 	private String email;
-	@NotBlank
-	@Size(min = 6)
+	@NotBlank(message = "Senha não informada")
+	@Size(min = 6, message = "A senha dever ter no minimo seis caracteres")
 	private String password;
 	
 	private String image;

@@ -21,12 +21,15 @@ public class Company {
 
 	@Id
 	private String id;
-	@NotBlank
+	
+	@NotBlank(message = "Nome não informado")
 	@Size(min = 2)
 	private String name;
-	@Email
+	@Email(message = "email invalido")
+	@NotBlank(message = "Email não informado")
 	private String email;
-	@Size(min = 6)
+	@NotBlank(message = "Senha não informada")
+	@Size(min = 6, message = "A senha dever ter no minimo seis caracteres")
 	private String password;
 
 	private String image;

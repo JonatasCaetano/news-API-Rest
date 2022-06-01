@@ -20,13 +20,14 @@ public class News {
 
 	@Id
 	private String id;
-	@NotBlank
-	@Size(min = 12, max = 140)
+	
+	@NotBlank(message = "Titulo da noticia não informado")
+	@Size(min = 12, max = 140, message = "O titulo deve ter entre 12 e 140 caracteres")
 	private String title;
-	@NotBlank
-	@Size(min = 280, max = 5000)
+	@NotBlank(message = "Texto da noticia não informado")
+	@Size(min = 280, max = 5000, message = "O texto da noticia dever ter entre 280 e 5000 caracteres")
 	private String body;
-	@NotBlank
+	@NotBlank(message = "Imagem da noticia não informada")
 	private String image;
 
 	private LocalDateTime creationDate;
